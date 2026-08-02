@@ -1,0 +1,21 @@
+{% load static %}
+<div class="showcase" data-showcase>
+  <p class="showcase__hint">drag or swipe to rotate ↔</p>
+  <div class="showcase__stage">
+    <div class="showcase__ring" style="--count:{{ items|length }}">
+      {% for shot in items %}
+      <div class="showcase__face" style="--i:{{ forloop.counter0 }}">
+        {% if shot.href %}<a href="{{ shot.href }}">{% endif %}
+        <img src="{% static shot.src %}" alt="{{ shot.alt }}" draggable="false" loading="lazy">
+        <span class="showcase__caption">{{ shot.alt }}</span>
+        {% if shot.href %}</a>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="showcase__dots">
+    {% for shot in items %}
+    <button type="button" data-index="{{ forloop.counter0 }}" class="{% if forloop.first %}is-active{% endif %}" aria-label="{{ shot.alt }}"></button>
+    {% endfor %}
+  </div>
+</div>

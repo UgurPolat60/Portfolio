@@ -1,0 +1,99 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}{{ project.name }}{% endblock %}
+{% block body_class %}page-project{% endblock %}
+
+{% block content %}
+<div data-mood="brag">
+
+<section class="hero hero--project">
+  <img class="hero__cover" src="{% static project.cover %}" alt="{{ project.name }}">
+  <div class="hero__overlay hero__overlay--strong"></div>
+
+  <div class="orbit orbit--project" aria-hidden="true" style="--n:{{ project.stack|length }}">
+    <div class="orbit__ring orbit__ring--a">
+      {% for tech in project.stack %}
+      <div class="orbit__item" style="--i:{{ forloop.counter0 }}">
+        <span class="orbit__badge">{{ tech }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="hero__content reveal in">
+    <p class="hero__eyebrow">{{ project.kind }} · {{ project.year }}</p>
+    <h1 class="hero__title">{{ project.name }}</h1>
+    <p class="hero__tagline">{{ project.tagline }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__inner reveal">
+    <div class="stat-grid">
+      {% for s in project.stats %}
+      <div class="stat" style="--d:{{ forloop.counter0 }}">
+        <div class="stat__value">{{ s.value }}</div>
+        <div class="stat__label">{{ s.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="prose prose--lead">{{ project.summary }}</p>
+    {% if project.originality %}
+    <div class="originality-badge">
+      <span class="originality-badge__icon">&#10022;</span>
+      <p><strong>Originality note:</strong> {{ project.originality }}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if project.credits %}
+  <div class="section__inner reveal">
+    <p class="kicker">Built by me</p>
+    <h2>Everything in this project, and who did it</h2>
+    <ul class="credits-list">
+      {% for c in project.credits %}
+      <li style="--d:{{ forloop.counter0 }}">{{ c }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="section__inner reveal">
+    <div class="chip-cloud">
+      {% for h in project.highlights %}
+      <span class="chip chip--pop" style="--d:{{ forloop.counter0 }}">{{ h }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% for block in project.sections %}
+  <div class="section__inner reveal detail-block {% cycle 'detail-block--left' 'detail-block--right' %}">
+    <span class="detail-block__index">{{ forloop.counter|stringformat:"02d" }}</span>
+    <h2>{{ block.heading }}</h2>
+    <p class="prose">{{ block.body }}</p>
+  </div>
+  {% endfor %}
+
+  <div class="section__inner reveal">
+    <p class="kicker">Technologies Used</p>
+    <div class="chip-row chip-row--wrap">
+      {% for tech in project.stack %}<span class="chip">{{ tech }}</span>{% endfor %}
+    </div>
+  </div>
+
+  <div class="section__inner reveal">
+    <p class="kicker">Screenshots</p>
+    {% include "portfolio/_showcase.html" with items=project.gallery %}
+  </div>
+
+  <div class="section__inner reveal">
+    <blockquote class="closing-quote">{{ project.closing }}</blockquote>
+  </div>
+
+  <div class="section__inner reveal project-nav">
+    <a class="btn btn--ghost" href="{% url 'portfolio:project_list' %}">← All Projects</a>
+  </div>
+</section>
+
+</div>
+{% endblock %}

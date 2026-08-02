@@ -1,0 +1,49 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>{% block title %}Uğur Polat{% endblock %} — Portfolio</title>
+<meta name="description" content="Uğur Polat — Computer Engineer, game and web developer. Java, Unity, PHP and Django projects.">
+<link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'portfolio/css/animations.css' %}">
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+</head>
+<body class="{% block body_class %}{% endblock %}" style="{% if accent %}--accent:{{ accent }};{% endif %}">
+
+<canvas id="bg-canvas"></canvas>
+
+<div id="mood-box" class="mood-box" data-state="idle">
+  <div class="mood-box__stage">
+    <img class="mood-photo" data-face="idle" src="{% static 'portfolio/img/mood/idle.png' %}" alt="">
+    <img class="mood-photo" data-face="scared" src="{% static 'portfolio/img/mood/scared.png' %}" alt="">
+    <img class="mood-photo" data-face="brag" src="{% static 'portfolio/img/mood/brag.png' %}" alt="">
+    <img class="mood-photo" data-face="graduate" src="{% static 'portfolio/img/mood/graduate.png' %}" alt="">
+  </div>
+  <div class="mood-box__name">UĞUR POLAT</div>
+</div>
+
+
+<header class="nav">
+  <nav class="nav__links">
+    <a href="{% url 'portfolio:home' %}">Home</a>
+    <a href="{% url 'portfolio:home' %}#resume">Résumé</a>
+    <a href="{% url 'portfolio:project_list' %}" data-mood="brag">Projects</a>
+    <a href="{% url 'portfolio:home' %}#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <p>Uğur Polat &copy; {% now "Y" %} — built from scratch with Django.</p>
+</footer>
+
+<script src="{% static 'portfolio/js/effects.js' %}"></script>
+<script src="{% static 'portfolio/js/cursor.js' %}"></script>
+<script src="{% static 'portfolio/js/showcase.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

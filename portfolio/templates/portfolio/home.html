@@ -1,0 +1,130 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="hero__overlay"></div>
+
+  <div class="orbit orbit--hero" aria-hidden="true" style="--n:{{ all_skills|length }}">
+    <div class="orbit__ring orbit__ring--a">
+      {% for item in all_skills %}
+      <div class="orbit__item" style="--i:{{ forloop.counter0 }}">
+        <span class="orbit__badge">{{ item.name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="orbit__ring orbit__ring--b">
+      {% for item in all_skills %}
+      <div class="orbit__item orbit__item--inner" style="--i:{{ forloop.counter0 }}">
+        <span class="orbit__badge orbit__badge--dim">{{ item.name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="hero__content reveal in">
+    <p class="hero__eyebrow">{{ profile.status }}</p>
+    <h1 class="hero__title">{{ profile.name }}</h1>
+    <p class="hero__role">{{ profile.role }}</p>
+    <p class="hero__tagline">{{ profile.tagline }}</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="{% url 'portfolio:project_list' %}" data-mood="brag">See My Projects</a>
+      <a class="btn btn--ghost" href="#contact">Get in Touch</a>
+    </div>
+  </div>
+  <a class="scroll-cue" href="#marquee">scroll down ↓</a>
+</section>
+
+<div class="marquee" id="marquee">
+  <div class="marquee__track">
+    {% for item in all_skills %}<span>{{ item.name }}</span>{% endfor %}
+    {% for item in all_skills %}<span>{{ item.name }}</span>{% endfor %}
+  </div>
+</div>
+
+<section class="section" id="resume" data-mood="graduate">
+
+  <div class="section__inner reveal">
+    <p class="kicker">About Me</p>
+    <h2>So, who is Uğur?</h2>
+    {% for p in profile.bio %}<p class="prose">{{ p }}</p>{% endfor %}
+  </div>
+
+  <div class="section__inner reveal" id="education">
+    <p class="kicker">Education</p>
+    <h2>Where I Studied</h2>
+    <div class="card-row">
+      {% for e in profile.education %}
+      <div class="edu-card">
+        <span class="edu-card__period">{{ e.period }}</span>
+        <h3>{{ e.school }}</h3>
+        <p class="edu-card__degree">{{ e.degree }}</p>
+        <p class="edu-card__note">{{ e.note }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section__inner reveal" id="skills">
+    <p class="kicker">Languages & Tools I Know</p>
+    <h2>Skills</h2>
+    <div class="chip-row">
+      {% for s in profile.soft_skills %}<span class="chip chip--soft">{{ s }}</span>{% endfor %}
+    </div>
+    <div class="skill-grid">
+      {% for group in profile.skills %}
+      <div class="skill-group{% if group.featured %} skill-group--featured{% endif %}">
+        <h3>{{ group.group }}</h3>
+        <ul>
+          {% for item in group.items %}
+          <li>
+            <span class="skill-dot"></span>{{ item.name }}
+            {% if item.bars %}
+            <span class="skill-bars" aria-hidden="true">{% for n in "12345" %}<i class="{% if forloop.counter <= item.bars %}is-filled{% endif %}"></i>{% endfor %}</span>
+            {% endif %}
+            {% if item.level %}<em>{{ item.level }}</em>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section__inner reveal" id="work" data-mood="brag">
+    <p class="kicker">What I've Built</p>
+    <h2>4 Projects I Developed End to End</h2>
+    <div class="chip-row">
+      {% for h in profile.highlights %}<span class="chip chip--soft">{{ h }}</span>{% endfor %}
+    </div>
+    {% include "portfolio/_showcase.html" with items=showcase_items %}
+    <div class="mini-grid">
+      {% for project in projects %}
+      <a class="mini-card tilt" data-mood="brag" style="--accent:{{ project.accent }};--d:{{ forloop.counter0 }}" href="{% url 'portfolio:project_detail' project.slug %}">
+        <span class="mini-card__kind">{{ project.kind }}</span>
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.tagline }}</p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+</section>
+
+<section class="section" id="contact">
+  <div class="section__inner reveal">
+    <p class="kicker">Contact</p>
+    <h2>Let's Talk</h2>
+    <p class="prose">I'm open to new opportunities and collaborations — reach me through any of the channels below.</p>
+    <div class="contact-row">
+      <a class="contact-pill" href="mailto:{{ profile.email }}">✉ {{ profile.email }}</a>
+      <a class="contact-pill" href="tel:{{ profile.phone|cut:' ' }}">☎ {{ profile.phone }}</a>
+      <span class="contact-pill contact-pill--static">📍 {{ profile.location }}</span>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
