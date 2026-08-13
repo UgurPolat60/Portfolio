@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Django Portfolio — Uğur Polat</title>
+<meta name="description" content="A Django portfolio site with an animated constellation background, canvas particle field and orbiting skill tags — and no database behind any of it.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/django-portfolio/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/django-portfolio/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#7b6cff">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">Web · Python / Django</p>
+  <h1>Django Portfolio</h1>
+  <p class="lede">
+    My other portfolio site — and in almost every way the opposite of this one.
+  </p>
+  <ul class="proj__stack">
+    <li>Python</li><li>Django 6</li><li>Jinja-style templates</li>
+    <li>Canvas 2D</li><li>Vanilla JavaScript</li><li>CSS animations</li>
+    <li>IntersectionObserver</li><li>No database</li>
+  </ul>
+</header>
+
+<div class="demo">
+  <div class="demo__box">
+    <div>
+      <h3>Open the actual site</h3>
+      <p>
+        The Django site is running, not screenshotted. The constellation reacts
+        to your cursor, the tags orbit, the sections reveal as you scroll — all
+        the things a still image cannot show you.
+      </p>
+    </div>
+    <a class="btn btn--solid demo__go" href="https://ugurpolat-django.onrender.com/" target="_blank" rel="noopener">Open the site →</a>
+  </div>
+</div>
+
+<div class="media" style="margin-top:2.5rem">
+  <figure>
+    <img src="/img/dj-home.jpg" alt="The Django site's home page: constellation background and orbiting skill tags">
+    <figcaption>
+      The landing page. The constellation redraws on a canvas every frame and the
+      skill tags orbit the name continuously — captured here mid-animation.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Two portfolio sites, built deliberately as opposites. This one is C, no
+      dependencies, no JavaScript framework, everything hand-rolled at the
+      protocol level. That one is Python and Django, leaning hard into what a
+      mature framework gives you for free — and spending the time saved on the
+      front end instead: a live canvas starfield, orbiting skill tags,
+      scroll-triggered reveals and a mood avatar that changes with the section
+      you are reading. Knowing when each approach is the right one is the actual
+      skill.
+    </p>
+
+    <h2>A framework used properly is not a shortcut</h2>
+    <p>
+      Django's templating, static file pipeline, URL routing and view layer do
+      real work here: the project pages are generated from a single template with
+      a slug-based route, so adding a project means adding a dictionary entry, not
+      a page. The same content renders the listing cards, the detail page, the
+      stats and the gallery.
+    </p>
+
+    <h2>No database, on purpose</h2>
+    <p>
+      A personal portfolio does not change at runtime, so there is no reason for
+      it to carry models, migrations and a database connection. The content lives
+      in a plain Python module. This is the same instinct as the C server on this
+      site, pointed in the other direction: use exactly as much machinery as the
+      problem needs, and not one layer more.
+    </p>
+
+    <h2>The front end is where the effort went</h2>
+    <p>
+      A canvas particle field draws a constellation that reacts to the cursor.
+      Skill tags orbit the name on independent timings. Sections reveal
+      themselves on scroll through an IntersectionObserver rather than a
+      scroll-event listener, so the page stays smooth. A small avatar in the
+      corner changes expression depending on which section you are reading —
+      which is the sort of detail nobody asks for and everybody remembers.
+    </p>
+
+    <h2>Written in Turkish, for a Turkish audience</h2>
+    <p>
+      That site targets local clients and is written in Turkish throughout. This
+      one targets international freelance work and is written in English. Same
+      person, same projects, two different audiences — and the language toggle in
+      the corner of this page exists because I would rather not make you guess
+      which one you are getting.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>0</b><span>database tables</span></div>
+        <div><b>1</b><span>template for all projects</span></div>
+        <div><b>0</b><span>JS frameworks</span></div>
+        <div><b>60</b><span>fps canvas field</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Highlights</h3>
+      <ul>
+        <li>Canvas constellation, cursor reactive</li>
+        <li>Orbiting skill tags</li>
+        <li>IntersectionObserver reveals</li>
+        <li>Section-aware mood avatar</li>
+        <li>Slug-routed project pages</li>
+        <li>Content as a Python module</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Why both exist</h3>
+      <ul>
+        <li>Django: ship fast, spend the time on design</li>
+        <li>C: own every byte, prove the fundamentals</li>
+        <li>Picking correctly is the point</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/dj-home.jpg" alt="Home page with the animated constellation">
+    <figcaption>The landing page — canvas constellation and orbiting tags, live.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/dj-projects.jpg" alt="The Django site's project cards">
+    <figcaption>The project listing, rendered from a single template with one accent colour per project.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Building the same thing twice — once with every convenience a framework
+    offers and once with none of them — taught me more about choosing tools than
+    either project would have alone.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/belgelendirme/">← Certification Platform</a>
+  <a href="/projects/laptop-anatomy/">Anatomy of a Laptop →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+</body>
+</html>

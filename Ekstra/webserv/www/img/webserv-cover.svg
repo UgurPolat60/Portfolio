@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <rect width="640" height="360" fill="#0d1016"/>
+  <rect x="40" y="40" width="560" height="280" rx="10" fill="#10141b" stroke="#222a36"/>
+  <rect x="40" y="40" width="560" height="34" rx="10" fill="#151a23"/>
+  <rect x="40" y="64" width="560" height="10" fill="#151a23"/>
+  <circle cx="62" cy="57" r="5" fill="#e0685f"/>
+  <circle cx="80" cy="57" r="5" fill="#e0b25f"/>
+  <circle cx="98" cy="57" r="5" fill="#66d9a0"/>
+  <g font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14">
+    <text x="66" y="112" fill="#66d9a0">$</text>
+    <text x="86" y="112" fill="#b9c2d0">./webserv 8080 www</text>
+    <text x="66" y="140" fill="#8b94a5">webserv listening on http://localhost:8080</text>
+    <text x="66" y="176" fill="#b9c2d0">GET  /</text>
+    <text x="360" y="176" fill="#66d9a0">200</text>
+    <text x="66" y="202" fill="#b9c2d0">GET  /style.css</text>
+    <text x="360" y="202" fill="#66d9a0">200</text>
+    <text x="66" y="228" fill="#b9c2d0">GET  /../../etc/passwd</text>
+    <text x="360" y="228" fill="#e0685f">403</text>
+    <text x="66" y="254" fill="#b9c2d0">POST /contact</text>
+    <text x="360" y="254" fill="#66d9a0">200</text>
+    <text x="66" y="286" fill="#66d9a0">$</text>
+    <rect x="86" y="274" width="9" height="16" fill="#66d9a0"/>
+  </g>
+</svg>

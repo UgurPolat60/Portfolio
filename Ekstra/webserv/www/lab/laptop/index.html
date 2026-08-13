@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy of a Laptop — Uğur Polat</title>
+<meta name="description" content="Scroll through a laptop and watch it come apart, with each part explained the way an engineer would explain it: what a display actually does, why a CPU is fast, what memory is for, why a GPU is a different kind of fast, and where the heat goes. Built in Three.js, served by a web server written in C.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/lab/laptop/laptop.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "/js/three.module.min.js",
+    "three/addons/": "/js/three/addons/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="hud">
+  <a class="hud__brand" href="/">ugur<span>.</span>polat</a>
+  <span class="hud__mid">Anatomy of a Laptop</span>
+  <span class="lang"><a href="/lab/laptop/" aria-current="true">EN</a><s>/</s><a href="/tr/lab/laptop/">TR</a></span>
+</header>
+
+<canvas id="stage"></canvas>
+
+<noscript>
+  <div class="fallback">This page is a 3D scene — it needs JavaScript.</div>
+</noscript>
+<div class="fallback" id="nowebgl" hidden>
+  Your browser could not start WebGL, so the 3D scene cannot run here.
+</div>
+
+<!-- If the scene cannot start, say so on the page instead of failing silently
+     into a black rectangle. -->
+<div class="fallback" id="oops" hidden></div>
+<script>
+addEventListener('error', function (e) {
+  var box = document.getElementById('oops');
+  box.hidden = false;
+  box.textContent = 'The 3D scene failed to start: ' + (e.message || e.type) +
+    (e.filename ? ' (' + e.filename + ':' + e.lineno + ')' : '');
+}, true);
+</script>
+
+<!-- the label that tracks whichever part is being explained -->
+<div class="pin" id="pin" hidden><i></i><span></span></div>
+
+<div class="progress"><div class="progress__bar" id="bar"></div></div>
+
+<div class="chapters" id="chapters" aria-hidden="true">
+  <button data-go="0" class="on">Closed</button>
+  <button data-go="1">Display</button>
+  <button data-go="2">Deck</button>
+  <button data-go="3">CPU</button>
+  <button data-go="4">Memory</button>
+  <button data-go="5">GPU</button>
+  <button data-go="6">Cooling</button>
+  <button data-go="7">Board</button>
+</div>
+
+<main class="scroll">
+
+  <section class="panel panel--hero" data-stage="0">
+    <p class="kicker">Three.js · scroll-driven</p>
+    <h1>Anatomy of<br>a <em>laptop</em>.</h1>
+    <p class="lede">
+      Everyone owns one. Almost nobody has seen inside one. Scroll, and this one
+      comes apart — and each piece gets explained the way it would be explained
+      to someone who has to fix it, not sold to someone who has to buy it.
+    </p>
+    <p class="hint">Scroll to begin ↓</p>
+  </section>
+
+  <section class="panel" data-stage="1">
+    <p class="kicker">01 — Display</p>
+    <h2>A screen is a wall of shutters.</h2>
+    <p>
+      Nothing in the panel emits the picture. Behind it there is a sheet of white
+      LEDs that is simply on. In front of that sit two polarising filters turned
+      ninety degrees to each other — crossed like that, they block everything.
+      Between them is the liquid crystal.
+    </p>
+    <p>
+      Liquid crystal is the trick. It is a fluid whose molecules line up, and
+      lining them up twists the light passing through. Untwisted, the light
+      arrives at the second filter in the wrong orientation and is stopped: black.
+      Apply a voltage and the molecules rotate, the light twists with them, and
+      some of it gets through. The voltage does not make light. It decides how
+      much light is allowed past.
+    </p>
+    <p>
+      Every pixel is three of those shutters side by side with a red, a green and
+      a blue filter on top. Your eye cannot resolve them individually, so it
+      averages. That is the entire mechanism: a lamp, two filters, and two
+      million controllable twists.
+    </p>
+    <p>
+      The panel is addressed one row at a time by a grid of transistors, one per
+      subpixel — that is what the TFT in "TFT LCD" means. The controller walks
+      down the rows writing voltages, and when it reaches the bottom it starts
+      again. If it starts drawing a new image before the previous one has finished
+      arriving, you see the seam. That is screen tearing, and it is why the
+      refresh cycle and the thing generating frames have to agree.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="2">
+    <p class="kicker">02 — Under the deck</p>
+    <h2>Everything is arranged around heat.</h2>
+    <p>
+      Lift the keyboard away and the layout stops looking arbitrary. The two
+      chips that turn electricity into heat sit at the back, closest to the vents,
+      with the cooling laid straight across them. The battery — physically the
+      largest object in the machine — takes the front, where your wrists are,
+      because it is the one component that must stay cool and must not be
+      punctured.
+    </p>
+    <p>
+      Nothing here is placed for convenience. Memory goes where the traces to the
+      processor can stay short and equal in length. The storage goes wherever is
+      left. The design constraint is not space, it is watts: a desktop can throw a
+      kilogram of metal at the problem, a laptop has twenty millimetres and your
+      lap.
+    </p>
+    <p>
+      It is also why laptops are hard to repair. Every millimetre saved is a
+      millimetre not spent on connectors, so parts get soldered down rather than
+      socketed. The two memory modules you are about to see are, on many machines,
+      the only thing left you are allowed to change.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="3">
+    <p class="kicker">03 — Processor</p>
+    <h2>The CPU is a machine for doing one thing at a time, extremely quickly.</h2>
+    <p>
+      Underneath the metal lid is a piece of silicon the size of a fingernail with
+      billions of transistors etched into it. A transistor is a switch with no
+      moving parts. Wire enough of them together and you can build a circuit that
+      adds two numbers; wire enough of those together and you can build something
+      that reads an instruction and does what it says.
+    </p>
+    <p>
+      That is the whole loop, and it has not changed since the 1940s: fetch the
+      next instruction from memory, decode what it means, execute it, write the
+      result back. A modern core does this billions of times a second, and it does
+      not do them one at a time — it runs them down a pipeline like an assembly
+      line, so while one instruction is being executed the next is already being
+      decoded and the one after that is being fetched.
+    </p>
+    <p>
+      Which creates the problem that defines modern processors. To keep the
+      pipeline full, the chip has to know which instruction comes next — but if
+      the code has just hit an <em>if</em>, that answer is not known yet. So the
+      processor guesses. It predicts the branch, runs ahead on the assumption, and
+      throws the work away if it guessed wrong. Good prediction is worth more than
+      clock speed, and this is where a large share of the transistors go.
+    </p>
+    <p>
+      The other share goes to cache. Main memory is roughly a hundred times slower
+      than the core, so a core that had to wait for it would spend almost all its
+      life idle. The fix is a hierarchy of progressively larger, slower memories
+      built onto the chip itself — a few kilobytes right next to the execution
+      units, a few megabytes shared between cores. Almost all of what a processor
+      does is arranging never to have to ask main memory anything.
+    </p>
+    <p>
+      And why several cores instead of one faster one? Because heat scales with
+      the square of voltage, and voltage has to rise with frequency. Doubling the
+      clock costs far more than double the power. Two cores at the same clock cost
+      about twice — so the industry stopped making one core faster around 2005 and
+      started making more of them, and handed the problem of using them to us.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="4">
+    <p class="kicker">04 — Memory</p>
+    <h2>RAM is the desk. Storage is the filing cabinet.</h2>
+    <p>
+      A bit in memory is one capacitor and one transistor. The capacitor either
+      holds a charge or does not, and the transistor decides whether you are
+      allowed to touch it. Billions of those in a grid is what a memory module is.
+    </p>
+    <p>
+      Capacitors leak. Within milliseconds the charge has drained enough to be
+      unreadable, so the chip continuously reads every row and writes it straight
+      back, thousands of times a second, purely to remind itself what it was
+      holding. That is what the D in DRAM means — dynamic — and it is why memory
+      forgets everything the moment power is removed. Not a design failure: a
+      capacitor that held its charge forever would take much longer to change.
+    </p>
+    <p>
+      Reading is not random either, despite the name. The chip opens an entire
+      row into a buffer first, then reads columns out of it. Hitting the same open
+      row again is fast; jumping to another row means closing the first one and
+      paying the full latency. This is exactly why code that walks through memory
+      in order is dramatically faster than code that jumps around, and why the
+      layout of your data can matter more than the algorithm.
+    </p>
+    <p>
+      There are two modules here rather than one for a reason. Each has its own
+      path to the processor, so both can be read at once — dual channel, roughly
+      double the bandwidth for the same capacity. A machine with one module and a
+      machine with two of half the size hold the same amount and do not perform
+      the same.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="5">
+    <p class="kicker">05 — Graphics</p>
+    <h2>The GPU is not a faster CPU. It is a wider one.</h2>
+    <p>
+      A processor core is built to finish one chain of dependent work as fast as
+      possible. Everything in it — branch prediction, out-of-order execution,
+      deep caches — exists to reduce the time between starting an instruction and
+      finishing it. That is a latency machine.
+    </p>
+    <p>
+      A graphics chip is built on the opposite bet: that you have thousands of
+      pieces of work that do not depend on each other. It has thousands of small
+      arithmetic units, and rather than giving each its own control logic, it runs
+      them in lockstep — one instruction issued to a whole group at once, each
+      acting on its own data. Cheap per unit, and pointless unless the work really
+      is that uniform.
+    </p>
+    <p>
+      Rendering is exactly that uniform. Two million pixels, and the colour of
+      each is computed by running the same short program on different inputs. The
+      chip does not need to finish any one pixel quickly; it needs to have
+      thousands in flight. When one group stalls waiting for a texture, it swaps
+      in another group and keeps the units busy. It hides latency instead of
+      fighting it.
+    </p>
+    <p>
+      It has its own memory for the same reason, and that memory is optimised for
+      bandwidth over latency — wide buses, many banks, moving enormous amounts of
+      data with no concern for how long any individual access takes.
+    </p>
+    <p>
+      Which is why this same chip turned out to run neural networks. Training a
+      model is a very large number of small multiply-accumulates with no
+      dependencies between them — structurally the same shape as shading pixels.
+      The hardware was not repurposed. The problem simply turned out to be the
+      one it was already built for.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="6">
+    <p class="kicker">06 — Cooling</p>
+    <h2>Heat is the real limit, not the silicon.</h2>
+    <p>
+      Every switch inside those chips leaks a little energy each time it flips,
+      and they flip billions of times a second. All of it becomes heat, in a box
+      you rest on your legs. Transistors also get leakier as they get hotter, so
+      heat produces more heat, and past a certain point the chip cannot cool
+      itself faster than it is warming.
+    </p>
+    <p>
+      Long before that, the firmware intervenes. It reads the die temperature
+      thousands of times a second and simply lowers the clock — thermal
+      throttling. This is why two laptops with identical specifications can
+      perform completely differently, and why the interesting number is not the
+      peak clock but the one it can hold for ten minutes.
+    </p>
+    <p>
+      The copper pipes are the clever part. Each is sealed, evacuated, and holds a
+      small amount of water. At the hot end the low pressure lets that water boil
+      at well under a hundred degrees, and boiling absorbs a great deal of energy.
+      The vapour rushes to the cold end, condenses back to liquid on the cooler
+      wall, releases that energy into the fins — and a wick lining the inside
+      draws the liquid back to the hot end by capillary action, with no pump and
+      no moving parts. A heatpipe moves heat many times better than a solid copper
+      bar of the same size, because it is not conducting it. It is carrying it.
+    </p>
+    <p>
+      The fans are the least interesting component and the only one you hear. All
+      they do is drag room-temperature air across those fins fast enough to take
+      the heat away. The pipes have already done the difficult part.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="7">
+    <p class="kicker">07 — Mainboard</p>
+    <h2>The board is the argument that these parts are one machine.</h2>
+    <p>
+      It looks like a green plate with components on it. It is closer to ten thin
+      sheets of copper laminated together, most of them not carrying signals at
+      all — they are solid planes of ground and power, there so that every signal
+      has a clean path directly beneath it to return along. Get those planes wrong
+      and the machine works on the bench and fails in the field.
+    </p>
+    <p>
+      At these speeds a copper track stops behaving like a wire and starts
+      behaving like a pipe for a wave. If the width or the spacing to the plane
+      below changes, part of the signal reflects back down the track and collides
+      with what is still arriving. So the tracks are drawn to a controlled
+      impedance, and where a group of them has to arrive together, they are drawn
+      to the same length — which is what the little zig-zags on a memory bus are.
+      They are not decoration. They are one track waiting for the others.
+    </p>
+    <p>
+      That physical limit is why buses went serial. Sending sixty-four bits side
+      by side means sixty-four tracks that must arrive within picoseconds of each
+      other, and that gets impossible as speeds rise. PCIe sends far fewer wires
+      much faster, each as a differential pair — two tracks carrying opposite
+      versions of the same signal, so any interference hits both equally and
+      subtracting one from the other cancels it.
+    </p>
+    <p>
+      And the unglamorous part: the power stages. The battery supplies something
+      near twelve volts; the processor wants about one, at very high current, and
+      it wants it to stay there while its draw changes by a factor of ten in
+      microseconds. The chokes and capacitors clustered around the socket are
+      switching converters doing exactly that, millions of times a second. When a
+      laptop dies young, this is usually what died.
+    </p>
+    <p class="outro">
+      Built with Three.js — every part in this scene is generated in code, not
+      loaded from a model file. And it was delivered to your browser by
+      <a href="/projects/webserv/">a web server I wrote in C</a>.
+      <a class="back-home" href="/projects/laptop-anatomy/">Read how it was built →</a>
+    </p>
+  </section>
+
+</main>
+
+<script type="module" src="/lab/laptop/laptop.js"></script>
+</body>
+</html>

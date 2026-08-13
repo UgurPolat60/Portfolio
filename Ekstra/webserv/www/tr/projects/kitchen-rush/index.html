@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kitchen Rush — Uğur Polat</title>
+<meta name="description" content="Gerçek zamanlı baskı üzerine kurulu, tek başıma geliştirdiğim bir Unity mutfak oyunu: tek arayüz arkasında altı istasyon, NUnit testleri ve elle modellenmiş her varlık.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/tr/projects/">Projeler</a>
+    <a href="/tr/#about">Hakkımda</a>
+    <a href="/tr/#server">Bu sunucu</a>
+    <span class="lang"><a href="/projects/kitchen-rush/">EN</a><s>/</s><a href="/tr/projects/kitchen-rush/" aria-current="true">TR</a></span>
+    <a class="nav__cta" href="/tr/#contact">Benimle çalış</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#ff7a45">
+
+<header class="proj__head">
+  <a class="back" href="/tr/projects/">← tüm projeler</a>
+  <p class="eyebrow">Unity Oyunu · Solo Proje</p>
+  <h1>Kitchen Rush</h1>
+  <p class="lede">
+    Tamamen gerçek zamanlı baskı üzerine kurulu, tek kişilik bir mutfak
+    simülasyonu — son dokusuna kadar tek başıma geliştirildi.
+  </p>
+  <ul class="proj__stack">
+    <li>Unity (Built-in RP)</li><li>C#</li><li>Yeni Input System</li><li>NUnit</li>
+    <li>Coroutine zamanlama</li><li>MaterialPropertyBlock</li>
+    <li>Mixamo rig hattı</li><li>Özel Editor araçları</li><li>TextMeshPro</li>
+  </ul>
+</header>
+
+<!-- VIDEO: şimdilik kapalı. Geri gelince aşağıdaki bloğu aç ve
+     /tr/index.html ile /tr/projects/index.html'de "Video + vaka analizi"ni geri koy.
+<div class="media">
+  <figure>
+    <video controls preload="metadata" poster="/img/kitchen-poster.jpg">
+      <source src="/media/kitchen-rush.mp4" type="video/mp4">
+      Tarayıcın bu videoyu oynatamıyor.
+    </video>
+    <figcaption>
+      Tam oynanış döngüsü: gelen siparişler, kesilip pişirilen malzemeler ve
+      süre dolmadan yetiştirilen tabaklar.
+    </figcaption>
+    <p class="vkeys">
+      <span><kbd>←</kbd> <kbd>→</kbd> 5sn</span>
+      <span><kbd>J</kbd> <kbd>L</kbd> 10sn</span>
+      <span><kbd>boşluk</kbd> oynat</span>
+      <span><kbd>F</kbd> tam ekran</span>
+      <span><kbd>0</kbd>–<kbd>9</kbd> atla</span>
+    </p>
+  </figure>
+</div>
+-->
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Overcooked'tan ilham alan, tek oyunculu bir mutfak yönetim oyunu. Oyuncu
+      istasyonlar arasında koşuyor, malzemeyi kesiyor, pişiriyor ve siparişleri
+      süresi dolmadan tezgaha yetiştirmeye çalışıyor. Unity'de baştan sona tek
+      başıma geliştirdim — her model, doku, animasyon ve arayüz öğesi dahil;
+      projede hiçbir asset paketi ve üçüncü parti araç yok.
+    </p>
+
+    <h2>Oynanış döngüsü</h2>
+    <p>
+      Sipariş üretimi, malzeme hazırlama (kesme/pişirme), teslim ve puanlama
+      arasında sürekli bir baskı döngüsü kurdum: siparişler arası 15 saniye,
+      ocakta pişirme süresi 3 saniye — oyuncuyu sürekli hareket halinde tutacak
+      ve asla tam olarak yetişemeyecek şekilde ince ayarlandı.
+    </p>
+
+    <h2>IInteractable üzerinden kod mimarisi</h2>
+    <p>
+      Kesme tezgahı, ocak, lavabo gibi 6 farklı istasyon tipi tek bir
+      <code>IInteractable</code> arayüzünü paylaşıyor. Yeni bir istasyon eklemek,
+      bu arayüzü uygulayan bir sınıf yazmaktan ibaret — oynanış kodu istasyonun
+      somut tipini hiç bilmiyor. Genişletebildiğin bir oyunla baştan yazdığın bir
+      oyun arasındaki fark bu.
+    </p>
+
+    <h2>Girdi, hareket ve animasyon</h2>
+    <p>
+      Unity'nin yeni Input System'i ile 3 girdi eylemi (Move, Interact, Cut)
+      tanımlandı. Karakter, Mixamo rig hattından beslenen 2 durumlu
+      (Idle/Walking) bir Animator ile hareket ediyor.
+    </p>
+
+    <h2>Sızıntısız görsel geri bildirim</h2>
+    <p>
+      Vurgulama sistemini her karede yeni materyal örneği oluşturmak yerine
+      <code>MaterialPropertyBlock</code> ile kurdum — GPU'ya tek seferde yazılan
+      hafif bir katman, on dakika oynadıktan sonra ortaya çıkan bir bellek
+      sızıntısı değil. Pişirme süresi gibi zamanlamalar coroutine tabanlı
+      çalışıyor.
+    </p>
+
+    <h2>Test ve kalite güvencesi</h2>
+    <p>
+      16 çalışma zamanı scriptinin yanında 7 NUnit birim testi yazdım. Bu, bir
+      Unity projesinde test kültürünü ilk kez ciddiye aldığım proje oldu —
+      "oynarken sorun görünmüyordu"yu doğrulama saymayı bıraktığım yer.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>Bir bakışta</h3>
+      <div class="side__nums">
+        <div><b>17</b><span>C# script</span></div>
+        <div><b>6</b><span>etkileşimli istasyon</span></div>
+        <div><b>7</b><span>NUnit testi</span></div>
+        <div><b>19</b><span>PBR dokulu obje</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Öne çıkanlar</h3>
+      <ul>
+        <li>IInteractable mimarisi</li>
+        <li>Yeni Input System</li>
+        <li>MaterialPropertyBlock vurgulama</li>
+        <li>Coroutine tabanlı zamanlama</li>
+        <li>NUnit test paketi</li>
+        <li>Mixamo animasyon hattı</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Sıfırdan üretildi</h3>
+      <ul>
+        <li>Tüm 3B modeller</li>
+        <li>Tüm dokular</li>
+        <li>Tüm animasyonlar</li>
+        <li>Arayüzün tamamı</li>
+        <li>Asset paketi yok, üçüncü parti araç yok</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/kitchen-1.jpg" alt="Mutfak istasyonları ve hazırlanmış malzemeler">
+    <figcaption>İstasyonlar ve hazırlanmış malzemeler — her obje elle modellendi ve dokulandı.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/kitchen-2.jpg" alt="Şef karakteri mutfağın ortasında">
+    <figcaption>Şef iş başında; yeni Input System ve Mixamo rig hattıyla hareket ediyor.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Arayüz öncelikli tasarım ve editör + çalışma-zamanı çift tetikli otomasyon
+    kararları, küçük bir oyunda bile temiz mimarinin nasıl fark yarattığını
+    gösterdi.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/tr/projects/rage-attack/">← Rage Attack</a>
+  <a href="/tr/projects/java-tower-defense/">Kule Savunma (Java) →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p><a href="/tr/projects/webserv/">webserv</a> tarafından servis ediliyor — C ile yazılmış bir web sunucusu.</p>
+</footer>
+<script src="/site.js"></script>
+</body>
+</html>

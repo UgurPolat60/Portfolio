@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy of a Laptop — Uğur Polat</title>
+<meta name="description" content="A scroll-driven Three.js teardown of a laptop: every part generated in code, no model files, served by a web server written in C.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/laptop-anatomy/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/laptop-anatomy/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#66d9a0">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">WebGL · Three.js</p>
+  <h1>Anatomy of a Laptop</h1>
+  <p class="lede">
+    A laptop that comes apart as you scroll — and every part of it is generated
+    in code, not loaded from a model file.
+  </p>
+  <ul class="proj__stack">
+    <li>Three.js r180</li><li>WebGL</li><li>ES modules + import map</li>
+    <li>Procedural geometry</li><li>PMREM environment lighting</li>
+    <li>InstancedMesh</li><li>Scroll-driven camera</li><li>No build step</li>
+  </ul>
+</header>
+
+<div class="demo">
+  <div class="demo__box">
+    <div>
+      <h3>Open it and scroll</h3>
+      <p>
+        Eight stages: the closed machine, the display, the deck lifting away,
+        then the processor, the memory, the graphics chip, the cooling assembly,
+        and finally the whole board in an exploded view. Arrow keys and the
+        chapter rail work too, and every stage has its own link.
+      </p>
+      <p class="demo__note">Needs WebGL — any browser from the last decade has it.</p>
+    </div>
+    <a class="btn btn--solid demo__go" href="/lab/laptop/" target="_blank" rel="noopener">Open the experience →</a>
+  </div>
+</div>
+
+<div class="media" style="margin-top:2.5rem">
+  <figure>
+    <img src="/img/laptop-cover.jpg" alt="The exploded view: cooling assembly floating above the mainboard">
+    <figcaption>
+      The final stage — cooling lifted clear, the board laid out beneath it, the
+      empty chassis below that.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Almost everyone owns a laptop and almost nobody has opened one. This is a
+      scroll-driven teardown: the machine opens, the keyboard deck lifts away,
+      the cooler comes off, and the camera dives to each component in turn while
+      the text explains what it actually does. The reference machine is a
+      15.6-inch gaming laptop in the Acer Nitro 5 class — the proportions,
+      component layout and thermal design are taken from that, without the
+      branding.
+    </p>
+
+    <h2>Nothing was downloaded, everything was built</h2>
+    <p>
+      There is no <code>.glb</code>, no <code>.obj</code>, no model file of any
+      kind. The chassis, the board, the CPU package, the memory modules, the
+      graphics die and its memory chips, the flattened copper heatpipes, the fin
+      stacks, the fans and their thirty-four blades — all of it is boxes,
+      cylinders and instanced meshes positioned in code. It made the whole scene
+      about 45 KB of JavaScript instead of several megabytes of geometry, and it
+      meant the layout could be argued with rather than accepted.
+    </p>
+
+    <h2>Scroll position is the only input</h2>
+    <p>
+      The page is eight screens tall and the canvas is fixed behind it. How far
+      down you are becomes a number between 0 and 1; everything else is a
+      function of that number — where the camera is, how far the lid has opened,
+      whether the deck has lifted, how far apart the parts have moved. That
+      single value is smoothed rather than followed exactly, which is the whole
+      difference between "3D on a page" and something that feels built.
+    </p>
+
+    <h2>The teardown had to happen in the right order</h2>
+    <p>
+      The first version dived to the processor and showed a copper plate,
+      because in a real laptop the cooler sits directly on top of the chip. So
+      the cooling assembly now lifts away before the CPU stage and stays off —
+      the same order you would take one apart on a desk. It is a small thing,
+      and it is the difference between a diagram and an explanation.
+    </p>
+
+    <h2>Making it look like a render rather than a diagram</h2>
+    <p>
+      A polished metal surface has almost no colour of its own — what you see in
+      it is the room. So the scene ships with a room: a studio built out of
+      emissive panels, a big overhead softbox for the streak that runs down the
+      lid, side fills to pick out the edges, baked once into an environment map.
+      Every edge in the model is bevelled rather than sharp, because a bevel is
+      what catches that light and turns an outline into an object.
+    </p>
+    <p>
+      On top of that sits a post chain: a multisampled buffer, a bloom pass
+      thresholded high enough that only the specular hits glow, ACES tone
+      mapping, and morphological antialiasing to clean the edges. The one thing
+      that took the most tuning was the opposite of adding light — the
+      environment had to be turned <em>down</em>, because at full strength the
+      same panels that make aluminium look like aluminium flood the matte
+      surfaces and a near-black circuit board comes out the colour of sage.
+    </p>
+
+    <h2>Then it had to actually run</h2>
+    <p>
+      The first version looked right and stuttered. Three things were wrong.
+      There was a full-screen antialiasing pass on top of multisampling that was
+      already doing the same job — three extra passes and two lookup textures
+      for no visible gain. The fan blades were eighty-four separate meshes,
+      which is eighty-four draw calls, doubled again because each one was also
+      drawn into the shadow map. And the shadow map was being redrawn every
+      frame whether anything had moved or not.
+    </p>
+    <p>
+      So: antialiasing is multisampling alone; the blades and the vents became
+      three instanced meshes; small components still receive shadow but no
+      longer cast it, because a two-millimetre capacitor's shadow is not worth
+      a draw call; and the shadow map is only redrawn when something in it
+      actually moved.
+    </p>
+    <p>
+      The last piece is a resolution controller. There is no way to ask a
+      browser what refresh rate it is running at, and <code>requestAnimationFrame</code>
+      is capped to it — so a hardcoded 120 fps target would just ratchet the
+      resolution down forever on a 60 Hz screen. Instead the loop watches for
+      the fastest frames it ever manages, takes that as the display's own frame
+      period, and treats "late relative to that" as the signal to render
+      smaller. On a fast machine it climbs back up to full device pixel ratio
+      and spends the headroom on sharpness. It defends whatever the screen can
+      actually show, rather than a number I picked.
+    </p>
+
+    <h2>Vendored, not linked</h2>
+    <p>
+      Three.js is served from this domain rather than a CDN, because the point of
+      this site is that one C binary serves every byte of it. That also means the
+      page has no third-party requests at all: no CDN, no analytics, no fonts
+      from someone else's server.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>8</b><span>scroll stages</span></div>
+        <div><b>0</b><span>model files</span></div>
+        <div><b>~45 KB</b><span>of scene code</span></div>
+        <div><b>60</b><span>fps target</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Built in code</h3>
+      <ul>
+        <li>Chassis, deck and hinged lid</li>
+        <li>10-layer board with VRM and traces</li>
+        <li>CPU package: substrate, die, heat spreader</li>
+        <li>GPU die ringed by its own memory</li>
+        <li>Two SODIMM modules in angled slots</li>
+        <li>Four flattened heatpipes, two fin stacks</li>
+        <li>Two fans, 34 blades each</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>How it is lit</h3>
+      <ul>
+        <li>Studio environment baked from emissive panels</li>
+        <li>Bevelled edges on every part</li>
+        <li>Soft shadow maps, shadow-only ground</li>
+        <li>Bloom on the specular hits only</li>
+        <li>ACES tone mapping, morphological AA</li>
+        <li>Brushed-metal anisotropy on the shell</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Details that mattered</h3>
+      <ul>
+        <li>Progress measured from the text, not the scrollbar</li>
+        <li>Labels projected from 3D to screen</li>
+        <li>Linkable stages (<code>#cpu</code>, <code>#board</code>)</li>
+        <li>Honours prefers-reduced-motion</li>
+        <li>Says so on the page if WebGL is missing</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/laptop-closed.jpg" alt="The closed laptop at the opening stage">
+    <figcaption>Stage one. Closed, turning slowly, lit by a single mint rim light.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-deck.jpg" alt="Internals revealed once the keyboard deck lifts away">
+    <figcaption>The deck lifts and dissolves: board, heatpipes, fans and battery underneath.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-cpu.jpg" alt="The CPU with its heat spreader, cooler removed">
+    <figcaption>The cooler had to come off first — otherwise the CPU stage shows a copper plate.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-cooling.jpg" alt="The cooling assembly lifted clear of the board">
+    <figcaption>Cold plates, four flattened heatpipes, two fin stacks and two blowers, lifted off as one piece.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-cover.jpg" alt="Exploded view of the whole machine">
+    <figcaption>Everything separated: cooling above, board in the middle, chassis below.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Building the laptop out of primitives instead of downloading a model turned
+    a rendering exercise into an argument about where the parts actually go —
+    which is the only reason the page teaches you anything.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/django-portfolio/">← Django Portfolio</a>
+  <a href="/projects/webserv/">webserv →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+</body>
+</html>

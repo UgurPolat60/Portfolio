@@ -1,0 +1,33 @@
+# A whitelist, not a blocklist: this folder also holds a client's real
+# certification database (dsa/certby1/certby (1).sql), personal photos and
+# screen recordings. On a public repo the safe default is "nothing", and
+# then name the three trees that actually get deployed.
+
+/*
+!/.gitignore
+!/.gitattributes
+!/render.yaml
+!/README.md
+
+!/Ekstra/
+Ekstra/*
+!Ekstra/webserv/
+!Ekstra/demo/
+
+!/Websitem/
+
+# The gameplay videos: 13 MB that git would carry forever, for two <video>
+# blocks that are currently commented out anyway. When they come back, delete
+# this line — the posters and screenshots are committed either way.
+Ekstra/webserv/www/media/
+
+# build output and runtime state: rebuilt on every deploy, never committed
+Ekstra/webserv/webserv
+Ekstra/webserv/*.o
+Ekstra/webserv/src/*.o
+Ekstra/webserv/contact.log
+Ekstra/demo/logs/
+Ekstra/demo/mail/
+Websitem/staticfiles/
+**/__pycache__/
+*.pyc

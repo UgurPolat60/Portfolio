@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work — Uğur Polat</title>
+<meta name="description" content="Five projects: two Unity games, a Java tower defense with no engine, a framework-free PHP platform, and an HTTP server written in C.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main>
+<section class="band" style="border-top:0">
+  <p class="eyebrow">Selected work</p>
+  <h2 class="h2">Seven projects, seven different reasons they were hard.</h2>
+  <p class="sub" style="max-width:62ch">
+    Every one of these was built solo, end to end. Two of them have video —
+    recorded from the actual builds, served to you by the C server this site
+    runs on.
+  </p>
+
+  <div class="work">
+    <a href="/projects/rage-attack/">
+      <img src="/img/rage-overview.jpg" alt="Rage Attack — the village seen from above">
+      <div class="work__body">
+        <p class="work__kind">Unity · Game · Solo</p>
+        <h3>Rage Attack</h3>
+        <p>You are a fly. The village is not happy about it. Every villager runs
+           an independent five-stage rage state machine, so every riot in the
+           game is emergent rather than scripted. 90+ custom editor tools were
+           written just to build the place.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/kitchen-rush/">
+      <img src="/img/kitchen-1.jpg" alt="Kitchen Rush — kitchen stations and prepared ingredients">
+      <div class="work__body">
+        <p class="work__kind">Unity · Game · Solo</p>
+        <h3>Kitchen Rush</h3>
+        <p>A cooking game built entirely on time pressure: six interactive
+           stations behind a single interface, coroutine-timed cooking, and 19
+           PBR-textured props modelled by hand. No asset store.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/java-tower-defense/">
+      <img src="/img/java-combat.jpg" alt="Java tower defense — wave 9 in progress">
+      <div class="work__body">
+        <p class="work__kind">Java · Desktop game · University</p>
+        <h3>Tower Defense (Java)</h3>
+        <p>My final year project, written in Java and Swing with no game engine
+           anywhere near it. Scene state machine, two synchronised threads,
+           inheritance-based enemies, and a tile map editor I wrote to design
+           the level you see here.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/belgelendirme/">
+      <img src="/img/cert-dashboard.jpg" alt="Certification platform dashboard">
+      <div class="work__body">
+        <p class="work__kind">PHP · Web platform</p>
+        <h3>Certification Platform</h3>
+        <p>A full certification and audit business running on 20 MySQL tables:
+           company records, certificate lifecycles, audit planning, expense
+           tracking and reporting. Written on raw PDO, with no framework, on
+           purpose. <b>You can log in and use it.</b></p>
+        <p class="work__more">Live demo + case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/django-portfolio/">
+      <img src="/img/dj-home.jpg" alt="The Django portfolio site">
+      <div class="work__body">
+        <p class="work__kind">Python · Django · Web</p>
+        <h3>Django Portfolio</h3>
+        <p>My other site, and the opposite of this one in every way: an animated
+           constellation background, a canvas particle field, orbiting skill tags
+           and scroll-triggered reveals — all served by Django with no database
+           behind it at all. <b>It is running — go and see.</b></p>
+        <p class="work__more">Live site + case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/laptop-anatomy/">
+      <img src="/img/laptop-cover.jpg" alt="Exploded 3D view of a laptop">
+      <div class="work__body">
+        <p class="work__kind">Three.js · WebGL</p>
+        <h3>Anatomy of a Laptop</h3>
+        <p>A laptop that comes apart as you scroll: the deck lifts, the cooler
+           comes off, the camera dives to the processor, the memory, the graphics
+           chip. Every part generated in code — no model files at all.
+           <b>Scroll through it.</b></p>
+        <p class="work__more">Live experience + case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/webserv/">
+      <img src="/img/webserv-cover.svg" alt="webserv terminal output">
+      <div class="work__body">
+        <p class="work__kind">C · Systems</p>
+        <h3>webserv</h3>
+        <p>The server this page runs on: HTTP/1.1 written from an empty file in
+           C with zero dependencies. One <code>poll()</code> loop serves every
+           visitor, image and video at once, and a single <code>realpath()</code>
+           check makes path traversal pointless rather than merely difficult.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+</body>
+</html>

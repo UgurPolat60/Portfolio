@@ -1,0 +1,7 @@
+# These files are written on Windows but run on Linux. A CRLF sneaking into a
+# shebang line or a make recipe fails with an error that never mentions line
+# endings ("bad interpreter: /bin/bash^M"), so pin them to LF and never debug it.
+*.sh        text eol=lf
+Makefile    text eol=lf
+Dockerfile  text eol=lf
+*.cnf       text eol=lf

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belgelendirme Platformu — Uğur Polat</title>
+<meta name="description" content="Bilinçli olarak framework'süz yazılmış bir belgelendirme ve tetkik yönetim platformu: ham PDO, 20 MySQL tablosu, beş kullanıcı rolü, AJAX mini-SPA sayfalar.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/tr/projects/">Projeler</a>
+    <a href="/tr/#about">Hakkımda</a>
+    <a href="/tr/#server">Bu sunucu</a>
+    <span class="lang"><a href="/projects/belgelendirme/">EN</a><s>/</s><a href="/tr/projects/belgelendirme/" aria-current="true">TR</a></span>
+    <a class="nav__cta" href="/tr/#contact">Benimle çalış</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#6c63ff">
+
+<header class="proj__head">
+  <a class="back" href="/tr/projects/">← tüm projeler</a>
+  <p class="eyebrow">Web Platformu · PHP</p>
+  <h1>Belgelendirme Platformu</h1>
+  <p class="lede">
+    Bilinçli olarak framework kullanmadan yazılmış bir belgelendirme ve tetkik
+    yönetim platformu.
+  </p>
+  <ul class="proj__stack">
+    <li>PHP 8 (prosedürel)</li><li>PDO — gerçek prepared statement</li>
+    <li>MySQL</li><li>Composer</li><li>Monolog 3.9</li><li>PHPMailer 6.10</li>
+    <li>Vanilla JavaScript</li><li>AJAX mini-SPA sayfalar</li>
+  </ul>
+</header>
+
+<div class="demo">
+  <div class="demo__box">
+    <div>
+      <h3>Kendin dene — şu anda çalışan gerçek sistem</h3>
+      <p>
+        Ekran görüntüsü turu değil: platformun kendisi, bütün özellikleri aktif.
+        Firma ekle, belge düzenle, tetkik planla, mail gönder. Oturumun kendi boş
+        veritabanını alıyor; yani sıfırdan başlıyorsun, yazdıklarını başkası
+        göremiyor ve sen çıkınca veritabanı siliniyor.
+      </p>
+      <p class="demo__creds">kullanıcı <b>admin</b> şifre <b>1234</b></p>
+      <p class="demo__note">Mailler internete değil, demo gelen kutusuna düşer.</p>
+    </div>
+    <a class="btn btn--solid demo__go" href="https://ugurpolat-certby.onrender.com/" target="_blank" rel="noopener">Demoyu aç →</a>
+  </div>
+</div>
+
+<div class="media" style="margin-top:2.5rem">
+  <figure>
+    <img src="/img/cert-dashboard.jpg" alt="Role göre yönlendirilen kontrol paneli">
+    <figcaption>
+      Kontrol paneli, beş rolden hangisiyle giriş yapıldığına göre kendini
+      yeniden yönlendiriyor.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Bir belgelendirme ve denetim kuruluşunun tüm iş akışını yöneten uçtan uca
+      bir platform: firma kayıtları, sertifika yaşam döngüsü, tetkik planlama,
+      masraf takibi ve raporlama tek bir sistemde. Laravel de Symfony de
+      seçenekti. Ben ham PDO ve prosedürel PHP'yi seçtim ve bu kararı
+      savunabiliyorum.
+    </p>
+
+    <h2>Bilinçli olarak framework'süz</h2>
+    <p>
+      Laravel ya da Symfony yerine ham PDO, prosedürel PHP ve elle yazılmış
+      vanilla JS bileşenlerini tercih ettim. Her sayfa kendi AJAX uç noktalarını
+      barındıran, bağımsız çalışabilen küçük bir "mini-SPA". Amaç, paylaşımlı
+      hosting üzerinde minimum bağımlılıkla hızlıca devreye alınabilen ve tek bir
+      mühendisin kafasında tamamen taşıyabileceği bir sistem kurmaktı. Böyle bir
+      projede bu, bir servis konteynerinden daha değerli.
+    </p>
+
+    <h2>Beş rol, tek oturum modeli</h2>
+    <p>
+      Admin, muhasebe yöneticisi, denetçi ve danışman gibi beş farklı rol tek bir
+      oturum ve güvenlik çekirdeğinden yönetiliyor; kontrol paneli girilen role
+      göre kendini yeniden yönlendiriyor.
+    </p>
+
+    <h2>Sertifikanın yaşam döngüsü</h2>
+    <p>
+      Firma sicilinden başlayıp akreditasyon türü, belgelendiren kuruluş, belge
+      numarası, kapsam ve geçerlilik tarihleri üzerinden ilerleyen tam bir
+      belgelendirme yaşam döngüsü. Belge takip kulesi, süresi yaklaşan ve geçen
+      belgeleri açar açmaz işaretliyor — ki işletmenin en başta yazılım
+      istemesinin sebebi tam olarak buydu.
+    </p>
+
+    <h2>Veri katmanı</h2>
+    <p>
+      MySQL üzerinde 20 tablo, çoğunlukla 3NF ve seçici foreign key'lerle
+      tasarlandı. Kanıt dosyaları için ikili (LONGBLOB) depolama, sık okunan
+      sayaçlar için performans amaçlı denormalize alanlar kullanıldı. Her sorgu
+      gerçek prepared statement üzerinden gidiyor — umut dolu bir
+      <code>addslashes()</code> ile string birleştirme değil.
+    </p>
+
+    <h2>Tetkik planlama, masraf takibi ve raporlama</h2>
+    <p>
+      Denetçi sahası üzerinden tetkik planlama, danışman ve eğitim masraflarının
+      ve tahsilatların takibi, uyumluluk raporlama paneli ve Monolog + PHPMailer
+      ile çalışan bir yazışma motoru — hepsi aynı oturum ve yetkilendirme
+      çekirdeği üzerine kuruldu.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>Bir bakışta</h3>
+      <div class="side__nums">
+        <div><b>20</b><span>MySQL tablosu</span></div>
+        <div><b>5</b><span>kullanıcı rolü</span></div>
+        <div><b>0</b><span>PHP framework</span></div>
+        <div><b>2</b><span>Composer kütüphanesi</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Öne çıkanlar</h3>
+      <ul>
+        <li>Framework'süz mimari</li>
+        <li>Beş rol, tek oturum çekirdeği</li>
+        <li>20 tablolu MySQL şeması</li>
+        <li>LONGBLOB kanıt depolama</li>
+        <li>Monolog + PHPMailer</li>
+        <li>AJAX tabanlı mini-SPA sayfalar</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Kısıta göre kuruldu</h3>
+      <ul>
+        <li>Paylaşımlı hosting, root yok</li>
+        <li>İki yüz değil iki bağımlılık</li>
+        <li>Dosya kopyalayarak kurulabilir</li>
+        <li>Tek kişi tarafından sürdürülebilir</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/cert-dashboard.jpg" alt="Role göre yönlendirilen kontrol paneli">
+    <figcaption>Kontrol paneli, tek bir oturum çekirdeğinden role göre yönlendiriliyor.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/cert-tracking.jpg" alt="Süresi yaklaşan belgeleri gösteren belge takip kulesi">
+    <figcaption>Belge takip kulesi — süresi yaklaşan ve geçen belgeler ilk bakışta işaretli.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Karmaşık bir iş süreci illa büyük bir framework gerektirmez — doğru
+    katmanlanmış prosedürel PHP, paylaşımlı hosting kısıtları altında bile
+    sürdürülebilir bir sistem kurabiliyor.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/tr/projects/java-tower-defense/">← Kule Savunma (Java)</a>
+  <a href="/tr/projects/django-portfolio/">Django Portfolyo →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p><a href="/tr/projects/webserv/">webserv</a> tarafından servis ediliyor — C ile yazılmış bir web sunucusu.</p>
+</footer>
+</body>
+</html>

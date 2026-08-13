@@ -1,0 +1,47 @@
+# Three free containers, one per thing that has to keep running. Render reads
+# this file when you point it at the repo, so the three services come up
+# together instead of being clicked into existence one at a time.
+#
+# The free plan sleeps a service after 15 minutes with no traffic and takes
+# roughly a minute to wake it. That is fine for the two demos — a visitor who
+# clicks "open the demo" is already committing to look — but not for the front
+# door, so keep an uptime pinger on the site and let the demos sleep.
+
+services:
+  - type: web
+    name: ugurpolat
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Ekstra/webserv/Dockerfile
+    dockerContext: ./Ekstra/webserv
+    healthCheckPath: /
+
+  - type: web
+    name: ugurpolat-certby
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Ekstra/demo/Dockerfile
+    dockerContext: ./Ekstra/demo
+    healthCheckPath: /
+    envVars:
+      # 512 MB does not hold 40 live databases; the janitor sweeps harder too
+      - key: DEMO_MAX_DATABASES
+        value: "8"
+      - key: TTL_MINUTES
+        value: "30"
+
+  - type: web
+    name: ugurpolat-django
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Websitem/Dockerfile
+    dockerContext: ./Websitem
+    healthCheckPath: /
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true

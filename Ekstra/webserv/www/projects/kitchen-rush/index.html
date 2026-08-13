@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kitchen Rush — Uğur Polat</title>
+<meta name="description" content="A solo Unity cooking game built on real-time pressure: six interactive stations behind one interface, NUnit tests, and every 3D asset modelled by hand.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/kitchen-rush/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/kitchen-rush/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#ff7a45">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">Unity Game · Solo Project</p>
+  <h1>Kitchen Rush</h1>
+  <p class="lede">
+    A single-player kitchen simulation built entirely on real-time pressure —
+    developed solo, down to the last texture.
+  </p>
+  <ul class="proj__stack">
+    <li>Unity (Built-in RP)</li><li>C#</li><li>New Input System</li><li>NUnit</li>
+    <li>Coroutine timing</li><li>MaterialPropertyBlock</li>
+    <li>Mixamo rig pipeline</li><li>Custom editor tools</li><li>TextMeshPro</li>
+  </ul>
+</header>
+
+<!-- VIDEO: temporarily out. Put the block below back and restore
+     "Video + case study" on /index.html and /projects/index.html.
+<div class="media">
+  <figure>
+    <video controls preload="metadata" poster="/img/kitchen-poster.jpg">
+      <source src="/media/kitchen-rush.mp4" type="video/mp4">
+      Your browser cannot play this video.
+    </video>
+    <figcaption>
+      Full gameplay loop: orders arriving, ingredients cut and cooked, plates
+      delivered before the timer runs out.
+    </figcaption>
+    <p class="vkeys">
+      <span><kbd>←</kbd> <kbd>→</kbd> 5s</span>
+      <span><kbd>J</kbd> <kbd>L</kbd> 10s</span>
+      <span><kbd>space</kbd> play</span>
+      <span><kbd>F</kbd> fullscreen</span>
+      <span><kbd>0</kbd>–<kbd>9</kbd> jump</span>
+    </p>
+  </figure>
+</div>
+-->
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      An Overcooked-inspired single-player kitchen management game. The player
+      runs between stations, cuts ingredients, cooks them, and races to get
+      orders onto the counter before they expire. Built end to end alone in
+      Unity — including every model, texture, animation and UI element, with no
+      asset pack and no third-party tooling anywhere in the project.
+    </p>
+
+    <h2>The gameplay loop</h2>
+    <p>
+      Order generation, ingredient preparation (cutting and cooking), delivery
+      and scoring form a continuous pressure loop: fifteen seconds between
+      orders, three seconds on the stove — tuned specifically to keep the player
+      permanently in motion and never quite caught up.
+    </p>
+
+    <h2>Architecture through IInteractable</h2>
+    <p>
+      Six different station types — cutting board, stove, sink and the rest —
+      all share a single <code>IInteractable</code> interface. Adding a new
+      station means writing one class that implements it; the gameplay code
+      never learns the station's concrete type. That is the difference between a
+      game you can extend and a game you rewrite.
+    </p>
+
+    <h2>Input, movement and animation</h2>
+    <p>
+      Three input actions (Move, Interact, Cut) defined through Unity's new
+      Input System. The character moves on a two-state Animator (Idle / Walking)
+      fed by a Mixamo rig pipeline.
+    </p>
+
+    <h2>Visual feedback without leaking memory</h2>
+    <p>
+      Highlighting is done with <code>MaterialPropertyBlock</code> rather than
+      instantiating a fresh material every frame — a lightweight layer written
+      to the GPU once, instead of a memory leak that only shows up ten minutes
+      into play. Timings like cooking duration run on coroutines.
+    </p>
+
+    <h2>Tests and quality</h2>
+    <p>
+      Alongside 16 runtime scripts I wrote 7 NUnit unit tests. This was the
+      project where I started taking a test culture seriously inside a Unity
+      project, rather than treating "it looked fine when I played it" as
+      verification.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>17</b><span>C# scripts</span></div>
+        <div><b>6</b><span>interactive stations</span></div>
+        <div><b>7</b><span>NUnit tests</span></div>
+        <div><b>19</b><span>PBR-textured props</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Highlights</h3>
+      <ul>
+        <li>IInteractable architecture</li>
+        <li>New Input System</li>
+        <li>MaterialPropertyBlock highlighting</li>
+        <li>Coroutine-based timing</li>
+        <li>NUnit test suite</li>
+        <li>Mixamo animation pipeline</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Made from scratch</h3>
+      <ul>
+        <li>All 3D models</li>
+        <li>All textures</li>
+        <li>All animations</li>
+        <li>The entire interface</li>
+        <li>No asset packs, no third-party tools</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/kitchen-1.jpg" alt="Kitchen stations with prepared ingredients">
+    <figcaption>Stations and prepared ingredients — every prop modelled and textured by hand.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/kitchen-2.jpg" alt="The chef character in the middle of the kitchen">
+    <figcaption>The chef mid-shift, driven by the new Input System and a Mixamo rig.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Interface-first design and dual editor/runtime automation showed how much
+    difference clean architecture makes even in a small game.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/rage-attack/">← Rage Attack</a>
+  <a href="/projects/java-tower-defense/">Tower Defense (Java) →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+<script src="/site.js"></script>
+</body>
+</html>

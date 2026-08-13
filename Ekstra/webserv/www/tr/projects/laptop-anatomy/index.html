@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bir Laptopun Anatomisi — Uğur Polat</title>
+<meta name="description" content="Kaydırmayla ilerleyen bir Three.js laptop sökümü: her parça kodla üretildi, model dosyası yok, C ile yazılmış bir web sunucusu servis ediyor.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/tr/projects/">Projeler</a>
+    <a href="/tr/#about">Hakkımda</a>
+    <a href="/tr/#server">Bu sunucu</a>
+    <span class="lang"><a href="/projects/laptop-anatomy/">EN</a><s>/</s><a href="/tr/projects/laptop-anatomy/" aria-current="true">TR</a></span>
+    <a class="nav__cta" href="/tr/#contact">Benimle çalış</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#66d9a0">
+
+<header class="proj__head">
+  <a class="back" href="/tr/projects/">← tüm projeler</a>
+  <p class="eyebrow">WebGL · Three.js</p>
+  <h1>Bir Laptopun Anatomisi</h1>
+  <p class="lede">
+    Kaydırdıkça parçalarına ayrılan bir laptop — ve her parçası bir model
+    dosyasından yüklenmiyor, kodla üretiliyor.
+  </p>
+  <ul class="proj__stack">
+    <li>Three.js r180</li><li>WebGL</li><li>ES modül + import map</li>
+    <li>Prosedürel geometri</li><li>PMREM ortam ışığı</li>
+    <li>InstancedMesh</li><li>Kaydırmayla sürülen kamera</li><li>Build adımı yok</li>
+  </ul>
+</header>
+
+<div class="demo">
+  <div class="demo__box">
+    <div>
+      <h3>Aç ve kaydır</h3>
+      <p>
+        Sekiz aşama: kapalı makine, ekran, kalkan klavye katı, sonra işlemci,
+        bellek, ekran kartı, soğutma bloğu ve en sonunda anakartın tamamı patlamış
+        görünümde. Sağdaki bölüm çubuğu da çalışıyor ve her aşamanın kendi
+        bağlantısı var.
+      </p>
+      <p class="demo__note">WebGL gerekiyor — son on yılın her tarayıcısında var.</p>
+    </div>
+    <a class="btn btn--solid demo__go" href="/tr/lab/laptop/" target="_blank" rel="noopener">Deneyimi aç →</a>
+  </div>
+</div>
+
+<div class="media" style="margin-top:2.5rem">
+  <figure>
+    <img src="/img/laptop-cover.jpg" alt="Patlamış görünüm: anakartın üzerinde havada duran soğutma bloğu">
+    <figcaption>
+      Son aşama — soğutma yukarı kalkmış, altında anakart, onun da altında boş
+      kasa.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Neredeyse herkesin bir laptopu var ve neredeyse kimse birini açmadı. Bu,
+      kaydırmayla ilerleyen bir söküm: makine açılıyor, klavye katı kalkıyor,
+      soğutucu çıkıyor ve kamera sırayla her parçaya iniyor, metin de o parçanın
+      gerçekte ne yaptığını anlatıyor. Referans makine, Acer Nitro 5 sınıfında
+      15,6 inçlik bir oyun laptopu — oranlar, parça yerleşimi ve termal tasarım
+      oradan alındı, marka olmadan.
+    </p>
+
+    <h2>Hiçbir şey indirilmedi, her şey inşa edildi</h2>
+    <p>
+      Ne <code>.glb</code> var ne <code>.obj</code>, hiçbir model dosyası yok.
+      Kasa, anakart, işlemci paketi, bellek modülleri, ekran kartı çekirdeği ve
+      etrafındaki bellek yongaları, yassılaştırılmış bakır ısı boruları,
+      kanatçık blokları, fanlar ve otuz dörder kanatları — hepsi kodla
+      konumlandırılmış kutular, silindirler ve instanced mesh'ler. Bu sayede
+      sahnenin tamamı birkaç megabaytlık geometri yerine yaklaşık 45 KB
+      JavaScript oldu; ve yerleşim kabul edilmek yerine tartışılabilir hale
+      geldi.
+    </p>
+
+    <h2>Tek girdi kaydırma konumu</h2>
+    <p>
+      Sayfa sekiz ekran yüksekliğinde ve canvas onun arkasında sabit. Ne kadar
+      aşağıda olduğun 0 ile 1 arasında bir sayıya dönüşüyor; geri kalan her şey
+      o sayının fonksiyonu — kameranın yeri, kapağın ne kadar açıldığı, klavye
+      katının kalkıp kalkmadığı, parçaların ne kadar ayrıldığı. O tek değer
+      birebir takip edilmiyor, yumuşatılıyor — "sayfada 3B" ile "inşa edilmiş
+      hissettiren şey" arasındaki fark tam olarak bu.
+    </p>
+
+    <h2>Söküm doğru sırayla olmalıydı</h2>
+    <p>
+      İlk sürüm işlemciye iniyor ve karşımıza bakır bir plaka çıkıyordu, çünkü
+      gerçek bir laptopta soğutucu doğrudan yongunun üstünde oturur. Bu yüzden
+      soğutma bloğu artık işlemci aşamasından önce kalkıyor ve kalkık kalıyor —
+      masada sökerken izleyeceğin sıranın aynısı. Küçük bir ayrıntı, ve bir şema
+      ile bir açıklama arasındaki fark.
+    </p>
+
+    <h2>Şema gibi değil, render gibi görünmesi</h2>
+    <p>
+      Parlatılmış bir metal yüzeyin neredeyse hiç kendi rengi yoktur — onda
+      gördüğün şey odadır. Bu yüzden sahne kendi odasıyla geliyor: ışık yayan
+      panellerden kurulmuş bir stüdyo, kapağın üzerinden akan parlaklık şeridi
+      için büyük bir tepe yumuşatıcısı, kenarları belirginleştiren yan dolgular —
+      hepsi bir kez ortam haritasına pişiriliyor. Modeldeki her kenar keskin
+      değil pahlı, çünkü o ışığı yakalayan ve bir konturu nesneye çeviren şey
+      pahın kendisi.
+    </p>
+    <p>
+      Üstünde bir post zinciri var: çoklu örneklemeli tampon, yalnızca parlama
+      noktalarının ışıyacağı kadar yüksek eşiklenmiş bir bloom geçişi, ACES ton
+      eşlemesi ve kenarları temizleyen morfolojik kenar yumuşatma. En çok ayar
+      isteyen şey ise ışık eklemenin tersiydi: ortam ışığını <em>kısmak</em>
+      gerekti; çünkü tam güçte, alüminyumu alüminyum gibi gösteren o paneller mat
+      yüzeyleri de basıyor ve neredeyse siyah bir devre kartı adaçayı renginde
+      çıkıyordu.
+    </p>
+
+    <h2>Sonra gerçekten akması gerekti</h2>
+    <p>
+      İlk sürüm doğru görünüyordu ve takılıyordu. Üç şey yanlıştı. Zaten aynı işi
+      yapan çoklu örneklemenin üstünde bir de tam ekran kenar yumuşatma geçişi
+      vardı — görünür bir kazanç olmadan üç fazladan geçiş ve iki arama dokusu.
+      Fan kanatları seksen dört ayrı mesh'ti, yani seksen dört çizim çağrısı; ve
+      her biri gölge haritasına da çizildiği için bu sayı ikiye katlanıyordu. Bir
+      de gölge haritası, hiçbir şey kıpırdamasa bile her karede yeniden
+      çiziliyordu.
+    </p>
+    <p>
+      Sonuç: kenar yumuşatma yalnızca çoklu örnekleme; kanatlar ve
+      havalandırmalar üç instanced mesh'e indi; küçük bileşenler gölge almaya
+      devam ediyor ama artık gölge düşürmüyor, çünkü iki milimetrelik bir
+      kondansatörün gölgesi bir çizim çağrısına değmez; ve gölge haritası
+      yalnızca içindeki bir şey gerçekten hareket ettiğinde yeniden çiziliyor.
+    </p>
+    <p>
+      Son parça bir çözünürlük denetleyicisi. Tarayıcıya hangi tazeleme hızında
+      çalıştığını sormanın bir yolu yok ve <code>requestAnimationFrame</code>
+      zaten ona kilitli — yani sabit 120 fps hedefi, 60 Hz bir ekranda
+      çözünürlüğü sonsuza kadar aşağı çekerdi. Bunun yerine döngü, o ana kadar
+      başardığı en hızlı kareleri izliyor, bunu ekranın kendi kare periyodu
+      kabul ediyor ve "buna göre geç kalmayı" küçük render etme sinyali sayıyor.
+      Hızlı bir makinede tam cihaz piksel oranına kadar geri tırmanıp artan
+      payı keskinliğe harcıyor. Benim seçtiğim bir sayıyı değil, ekranın
+      gerçekten gösterebildiğini savunuyor.
+    </p>
+
+    <h2>CDN'den değil, buradan</h2>
+    <p>
+      Three.js bir CDN'den değil bu alan adından servis ediliyor, çünkü bu
+      sitenin bütün mevzusu her baytını tek bir C binary'sinin göndermesi. Bunun
+      yan faydası: sayfanın hiç üçüncü parti isteği yok — CDN yok, analitik yok,
+      başkasının sunucusundan gelen font yok.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>Bir bakışta</h3>
+      <div class="side__nums">
+        <div><b>8</b><span>kaydırma aşaması</span></div>
+        <div><b>0</b><span>model dosyası</span></div>
+        <div><b>~45 KB</b><span>sahne kodu</span></div>
+        <div><b>60</b><span>fps hedefi</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Kodla üretildi</h3>
+      <ul>
+        <li>Kasa, klavye katı ve menteşeli kapak</li>
+        <li>VRM ve yollarıyla 10 katmanlı anakart</li>
+        <li>İşlemci paketi: taban, çekirdek, ısı kapağı</li>
+        <li>Kendi belleğiyle çevrili GPU çekirdeği</li>
+        <li>Açılı yuvalarda iki SODIMM modül</li>
+        <li>Dört yassı ısı borusu, iki kanatçık bloğu</li>
+        <li>İkişer fan, her birinde 34 kanat</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Nasıl aydınlatıldı</h3>
+      <ul>
+        <li>Işık yayan panellerden pişirilmiş stüdyo ortamı</li>
+        <li>Her parçada pahlı kenarlar</li>
+        <li>Yumuşak gölge haritaları, sadece gölge gösteren zemin</li>
+        <li>Yalnızca parlama noktalarında bloom</li>
+        <li>ACES ton eşlemesi, morfolojik kenar yumuşatma</li>
+        <li>Kasada fırçalanmış metal anizotropisi</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Önemsenen ayrıntılar</h3>
+      <ul>
+        <li>İlerleme kaydırma çubuğundan değil metinden ölçülüyor</li>
+        <li>3B'den ekrana yansıtılan etiketler</li>
+        <li>Bağlanabilir aşamalar (<code>#cpu</code>, <code>#board</code>)</li>
+        <li>prefers-reduced-motion'a saygı duyuyor</li>
+        <li>WebGL yoksa bunu sayfada söylüyor</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/laptop-closed.jpg" alt="Açılış aşamasında kapalı laptop">
+    <figcaption>Birinci aşama. Kapalı, yavaşça dönüyor, tek bir nane rengi kenar ışığıyla.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-deck.jpg" alt="Klavye katı kalkınca ortaya çıkan iç yapı">
+    <figcaption>Klavye katı kalkıp eriyor: altında anakart, ısı boruları, fanlar ve batarya.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-cpu.jpg" alt="Soğutucu kaldırılmış hâlde ısı kapağıyla CPU">
+    <figcaption>Önce soğutucunun çıkması gerekiyordu — yoksa işlemci aşamasında bakır plaka görünüyor.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-cooling.jpg" alt="Anakarttan ayrılmış soğutma bloğu">
+    <figcaption>Soğuk plakalar, dört yassı ısı borusu, iki kanatçık bloğu ve iki fan — tek parça hâlinde kalkıyor.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/laptop-cover.jpg" alt="Makinenin tamamının patlamış görünümü">
+    <figcaption>Her şey ayrılmış: üstte soğutma, ortada anakart, altta kasa.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Laptopu hazır bir model indirmek yerine ilkel şekillerden inşa etmek, bunu
+    bir render alıştırmasından çıkarıp parçaların gerçekte nereye gittiği
+    üzerine bir tartışmaya çevirdi — sayfanın sana bir şey öğretmesinin tek
+    sebebi de bu.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/tr/projects/django-portfolio/">← Django Portfolyo</a>
+  <a href="/tr/projects/webserv/">webserv →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p><a href="/tr/projects/webserv/">webserv</a> tarafından servis ediliyor — C ile yazılmış bir web sunucusu.</p>
+</footer>
+</body>
+</html>

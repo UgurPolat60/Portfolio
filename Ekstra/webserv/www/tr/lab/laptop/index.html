@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bir Laptopun Anatomisi — Uğur Polat</title>
+<meta name="description" content="Kaydırdıkça bir laptop parçalarına ayrılıyor ve her parça bir mühendisin anlatacağı gibi anlatılıyor: ekran gerçekte ne yapar, işlemci neden hızlıdır, bellek ne işe yarar, GPU neden farklı türde hızlıdır ve ısı nereye gider. Three.js ile yapıldı, C ile yazılmış bir web sunucusu servis ediyor.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/lab/laptop/laptop.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "/js/three.module.min.js",
+    "three/addons/": "/js/three/addons/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="hud">
+  <a class="hud__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <span class="hud__mid">Bir Laptopun Anatomisi</span>
+  <span class="lang"><a href="/lab/laptop/">EN</a><s>/</s><a href="/tr/lab/laptop/" aria-current="true">TR</a></span>
+</header>
+
+<canvas id="stage"></canvas>
+
+<noscript>
+  <div class="fallback">Bu sayfa bir 3B sahne — JavaScript gerekiyor.</div>
+</noscript>
+<div class="fallback" id="nowebgl" hidden>
+  Tarayıcın WebGL'i başlatamadı, bu yüzden 3B sahne burada çalışamıyor.
+</div>
+
+<div class="fallback" id="oops" hidden></div>
+<script>
+addEventListener('error', function (e) {
+  var box = document.getElementById('oops');
+  box.hidden = false;
+  box.textContent = '3B sahne başlatılamadı: ' + (e.message || e.type) +
+    (e.filename ? ' (' + e.filename + ':' + e.lineno + ')' : '');
+}, true);
+</script>
+
+<div class="pin" id="pin" hidden><i></i><span></span></div>
+
+<div class="progress"><div class="progress__bar" id="bar"></div></div>
+
+<div class="chapters" id="chapters" aria-hidden="true">
+  <button data-go="0" class="on">Kapalı</button>
+  <button data-go="1">Ekran</button>
+  <button data-go="2">Klavye katı</button>
+  <button data-go="3">İşlemci</button>
+  <button data-go="4">Bellek</button>
+  <button data-go="5">Ekran kartı</button>
+  <button data-go="6">Soğutma</button>
+  <button data-go="7">Anakart</button>
+</div>
+
+<main class="scroll">
+
+  <section class="panel panel--hero" data-stage="0">
+    <p class="kicker">Three.js · kaydırmayla</p>
+    <h1>Bir laptopun<br><em>anatomisi</em>.</h1>
+    <p class="lede">
+      Herkesin bir tane var. Neredeyse kimse içini görmedi. Kaydır, bu laptop
+      parçalarına ayrılsın — ve her parça, onu satın alacak birine değil, onu
+      tamir edecek birine anlatılır gibi anlatılsın.
+    </p>
+    <p class="hint">Başlamak için kaydır ↓</p>
+  </section>
+
+  <section class="panel" data-stage="1">
+    <p class="kicker">01 — Ekran</p>
+    <h2>Ekran, bir panjur duvarıdır.</h2>
+    <p>
+      Paneldeki hiçbir şey görüntüyü yaymıyor. Arkasında sadece açık duran beyaz
+      bir LED tabakası var. Onun önünde birbirine doksan derece çevrilmiş iki
+      polarize filtre duruyor — böyle çaprazlandıklarında her şeyi engellerler.
+      Aralarındaki şey ise sıvı kristal.
+    </p>
+    <p>
+      İşin püf noktası sıvı kristal. Molekülleri hizalanabilen bir akışkan ve
+      onları hizalamak, içinden geçen ışığı büküyor. Bükülmediğinde ışık ikinci
+      filtreye yanlış yönelimle varıyor ve durduruluyor: siyah. Voltaj
+      uygulandığında moleküller dönüyor, ışık onlarla birlikte bükülüyor ve bir
+      kısmı geçebiliyor. Voltaj ışık üretmiyor. Ne kadar ışığın geçmesine izin
+      verileceğine karar veriyor.
+    </p>
+    <p>
+      Her piksel, üstlerinde kırmızı, yeşil ve mavi filtre bulunan üç panjurdan
+      oluşuyor. Gözün onları tek tek ayırt edemediği için ortalamasını alıyor.
+      Mekanizmanın tamamı bu: bir lamba, iki filtre ve iki milyon kontrol
+      edilebilir bükülme.
+    </p>
+    <p>
+      Panel, her alt piksele bir tane düşen transistör ızgarasıyla satır satır
+      adresleniyor — "TFT LCD"deki TFT tam olarak bu demek. Denetleyici satırlar
+      boyunca inip voltajları yazıyor, en alta varınca baştan başlıyor. Bir
+      önceki görüntü tamamlanmadan yenisini çizmeye başlarsa ekranda dikişi
+      görürsün. Buna ekran yırtılması deniyor ve yenileme döngüsüyle kareyi
+      üreten şeyin neden anlaşması gerektiğinin sebebi bu.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="2">
+    <p class="kicker">02 — Klavye katının altı</p>
+    <h2>Her şey ısının etrafına dizilmiş.</h2>
+    <p>
+      Klavyeyi kaldırınca yerleşim rastgele görünmekten çıkıyor. Elektriği ısıya
+      çeviren iki yonga, havalandırmalara en yakın olan arkada duruyor ve soğutma
+      doğrudan üzerlerinden geçiyor. Makinenin fiziksel olarak en büyük parçası
+      olan batarya ise ön tarafı, yani bileklerinin olduğu yeri alıyor — çünkü
+      serin kalması ve delinmemesi gereken tek bileşen o.
+    </p>
+    <p>
+      Buradaki hiçbir şey kolaylık olsun diye yerleştirilmemiş. Bellek,
+      işlemciye giden yolların kısa ve birbirine eşit uzunlukta kalabileceği yere
+      konuyor. Depolama ise arta kalan yere. Tasarım kısıtı alan değil, watt:
+      bir masaüstü probleme bir kilo metal fırlatabilir, laptopun yirmi
+      milimetresi ve senin kucağın var.
+    </p>
+    <p>
+      Laptopların neden zor tamir edildiğinin sebebi de bu. Kazanılan her
+      milimetre, konnektöre harcanmayan bir milimetre demek; o yüzden parçalar
+      sokete takılmak yerine lehimleniyor. Birazdan göreceğin iki bellek modülü,
+      birçok makinede değiştirmene izin verilen tek şey.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="3">
+    <p class="kicker">03 — İşlemci</p>
+    <h2>CPU, aynı anda tek bir işi son derece hızlı yapan bir makinedir.</h2>
+    <p>
+      Metal kapağın altında, içine milyarlarca transistör kazınmış tırnak
+      büyüklüğünde bir silikon parçası var. Transistör, hareketli parçası olmayan
+      bir anahtar. Yeterince çoğunu birbirine bağlarsan iki sayıyı toplayan bir
+      devre kurabilirsin; o devrelerden yeterince çoğunu bağlarsan bir komutu
+      okuyup dediğini yapan bir şey kurarsın.
+    </p>
+    <p>
+      Döngünün tamamı bu ve 1940'lardan beri değişmedi: bir sonraki komutu
+      bellekten al, ne demek olduğunu çöz, yürüt, sonucu geri yaz. Modern bir
+      çekirdek bunu saniyede milyarlarca kez yapıyor ve teker teker de yapmıyor —
+      komutları bir montaj hattı gibi bir boru hattından geçiriyor; biri
+      yürütülürken bir sonraki çözülüyor, ondan sonraki alınıyor.
+    </p>
+    <p>
+      Ve bu, modern işlemcileri tanımlayan problemi doğuruyor. Boru hattını dolu
+      tutmak için yonganın bir sonraki komutun ne olduğunu bilmesi gerekiyor —
+      ama kod az önce bir <em>if</em>'e girdiyse o cevap henüz belli değil. Bu
+      yüzden işlemci tahmin ediyor. Dallanmayı öngörüp o varsayımla ileri
+      koşuyor, yanlış tahmin ettiyse yaptığı işi çöpe atıyor. İyi tahmin,
+      saat hızından daha değerli; transistörlerin ciddi bir kısmı buraya gidiyor.
+    </p>
+    <p>
+      Geri kalan kısım önbelleğe gidiyor. Ana bellek çekirdekten kabaca yüz kat
+      yavaş; onu beklemek zorunda kalan bir çekirdek ömrünün neredeyse tamamını
+      boşta geçirirdi. Çözüm, yonganın kendi üzerine kurulmuş, giderek büyüyen ve
+      yavaşlayan bir bellek hiyerarşisi — yürütme birimlerinin hemen yanında
+      birkaç kilobayt, çekirdekler arasında paylaşılan birkaç megabayt. Bir
+      işlemcinin yaptığı işin neredeyse tamamı, ana belleğe hiçbir şey sormak
+      zorunda kalmamayı ayarlamaktan ibaret.
+    </p>
+    <p>
+      Peki neden tek hızlı çekirdek yerine birkaç çekirdek? Çünkü ısı voltajın
+      karesiyle artıyor ve voltajın frekansla birlikte yükselmesi gerekiyor. Saat
+      hızını ikiye katlamak, gücü ikiye katlamaktan çok daha pahalı. Aynı hızda
+      iki çekirdek ise yaklaşık iki katına mal oluyor — bu yüzden sektör 2005
+      civarında tek çekirdeği hızlandırmayı bırakıp sayısını artırmaya başladı ve
+      onları kullanma problemini bize devretti.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="4">
+    <p class="kicker">04 — Bellek</p>
+    <h2>RAM masadır. Depolama dolaptır.</h2>
+    <p>
+      Bellekteki bir bit, bir kondansatör ve bir transistör demek. Kondansatör ya
+      yük tutuyor ya tutmuyor; transistör de ona dokunmana izin verilip
+      verilmediğine karar veriyor. Bir bellek modülü, bunlardan milyarlarcasının
+      ızgara hâlinde dizilmiş hâli.
+    </p>
+    <p>
+      Kondansatörler kaçırır. Milisaniyeler içinde yük, okunamayacak kadar
+      boşalıyor; bu yüzden yonga her satırı sürekli okuyup aynen geri yazıyor,
+      saniyede binlerce kez, sadece ne tuttuğunu kendine hatırlatmak için. DRAM'in
+      D'si bu demek — dinamik — ve belleğin güç kesildiği anda her şeyi
+      unutmasının sebebi de bu. Bir tasarım hatası değil: yükünü sonsuza kadar
+      tutan bir kondansatörün değişmesi çok daha uzun sürerdi.
+    </p>
+    <p>
+      Adına rağmen okuma da rastgele değil. Yonga önce koca bir satırı bir
+      tampona açıyor, sonra ondan sütun okuyor. Aynı açık satıra tekrar vurmak
+      hızlı; başka bir satıra atlamak, ilkini kapatıp gecikmenin tamamını ödemek
+      demek. Bellekte sırayla ilerleyen kodun, zıplayan koddan çarpıcı biçimde
+      hızlı olmasının sebebi tam olarak bu — ve verinin yerleşiminin neden bazen
+      algoritmadan daha önemli olduğunun da.
+    </p>
+    <p>
+      Burada tek modül değil iki modül olmasının bir sebebi var. Her birinin
+      işlemciye kendi yolu olduğu için ikisi aynı anda okunabiliyor — çift kanal,
+      aynı kapasitede kabaca iki katı bant genişliği. Tek modüllü bir makineyle,
+      yarısı boyunda iki modüllü bir makine aynı miktarı tutar ama aynı performansı
+      vermez.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="5">
+    <p class="kicker">05 — Ekran kartı</p>
+    <h2>GPU daha hızlı bir CPU değildir. Daha geniş bir CPU'dur.</h2>
+    <p>
+      Bir işlemci çekirdeği, birbirine bağlı tek bir iş zincirini olabildiğince
+      çabuk bitirmek için kurulmuştur. İçindeki her şey — dallanma tahmini, sıra
+      dışı yürütme, derin önbellekler — bir komutu başlatmakla bitirmek arasındaki
+      süreyi kısaltmak için var. Bu bir gecikme makinesi.
+    </p>
+    <p>
+      Ekran kartı ise tam ters bahis üzerine kurulu: birbirinden bağımsız binlerce
+      iş parçan olduğu varsayımı. İçinde binlerce küçük aritmetik birim var ve her
+      birine kendi kontrol mantığını vermek yerine hepsini aynı adımda çalıştırıyor
+      — tek bir komut bütün gruba birden veriliyor, her biri kendi verisi üzerinde
+      işliyor. Birim başına ucuz, ve iş gerçekten bu kadar tekdüze değilse
+      anlamsız.
+    </p>
+    <p>
+      Görüntü üretmek tam olarak bu kadar tekdüze. İki milyon piksel ve her
+      birinin rengi, aynı kısa programın farklı girdilerle çalıştırılmasıyla
+      hesaplanıyor. Yonganın herhangi bir pikseli hızlı bitirmesi gerekmiyor;
+      aynı anda binlercesini havada tutması gerekiyor. Bir grup dokuyu beklerken
+      takıldığında başka bir grubu devreye sokup birimleri meşgul tutuyor.
+      Gecikmeyle savaşmıyor, onu gizliyor.
+    </p>
+    <p>
+      Kendi belleğinin olmasının sebebi de aynı; ve o bellek gecikme değil bant
+      genişliği için optimize edilmiş — geniş yollar, çok sayıda banka, tek bir
+      erişimin ne kadar sürdüğünü umursamadan devasa miktarda veri taşımak.
+    </p>
+    <p>
+      Aynı yonganın sinir ağlarını çalıştırır hâle gelmesinin sebebi de bu. Bir
+      modeli eğitmek, aralarında bağımlılık olmayan çok sayıda küçük çarp-topla
+      işlemi demek — yapısal olarak piksel gölgelendirmekle aynı şekil. Donanım
+      başka bir işe uyarlanmadı. Problem, zaten onun için kurulmuş olan problem
+      çıktı.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="6">
+    <p class="kicker">06 — Soğutma</p>
+    <h2>Asıl sınır silikon değil, ısı.</h2>
+    <p>
+      O yongaların içindeki her anahtar, her devrildiğinde bir miktar enerji
+      kaçırıyor ve saniyede milyarlarca kez deviriliyorlar. Hepsi ısıya
+      dönüşüyor — hem de kucağında duran bir kutunun içinde. Üstelik transistörler
+      ısındıkça daha çok kaçırıyor, yani ısı daha çok ısı üretiyor ve belli bir
+      noktadan sonra yonga kendini ısınma hızından daha hızlı soğutamıyor.
+    </p>
+    <p>
+      Ama çok daha öncesinde yazılım devreye giriyor. Çip sıcaklığını saniyede
+      binlerce kez okuyup saat hızını basitçe düşürüyor — termal kısıtlama. Aynı
+      özelliklere sahip iki laptopun neden tamamen farklı performans
+      gösterebildiğinin ve asıl önemli sayının tepe hız değil, on dakika
+      koruyabildiği hız olduğunun sebebi bu.
+    </p>
+    <p>
+      Asıl zekice kısım bakır borular. Her biri sızdırmaz, içi vakumlanmış ve az
+      miktarda su barındırıyor. Sıcak uçta düşük basınç, o suyun yüz derecenin
+      epey altında kaynamasını sağlıyor ve kaynamak muazzam miktarda enerji
+      yutuyor. Buhar soğuk uca koşuyor, orada daha serin duvarda yoğuşup sıvıya
+      dönüyor, o enerjiyi kanatçıklara bırakıyor — ve içini kaplayan bir fitil,
+      sıvıyı kılcallıkla sıcak uca geri çekiyor; ne pompa var ne hareketli parça.
+      Bir ısı borusu, aynı boydaki som bakır çubuktan kat kat iyi çalışıyor,
+      çünkü ısıyı iletmiyor. Taşıyor.
+    </p>
+    <p>
+      Fanlar ise en az ilginç bileşen ve duyduğun tek şey. Tek yaptıkları, oda
+      sıcaklığındaki havayı o kanatçıkların üzerinden ısıyı alıp götürecek kadar
+      hızlı sürüklemek. Zor kısmı borular çoktan hallediyor.
+    </p>
+  </section>
+
+  <section class="panel" data-stage="7">
+    <p class="kicker">07 — Anakart</p>
+    <h2>Anakart, bu parçaların tek bir makine olduğunun kanıtıdır.</h2>
+    <p>
+      Üzerine bileşen dizilmiş yeşil bir levha gibi görünüyor. Gerçekte birbirine
+      lamine edilmiş on ince bakır tabakaya daha yakın ve çoğu hiç sinyal
+      taşımıyor — onlar som toprak ve besleme düzlemleri; her sinyalin hemen
+      altında geri dönebileceği temiz bir yol bulunsun diye oradalar. O düzlemleri
+      yanlış kurarsan makine tezgâhta çalışır, sahada bozulur.
+    </p>
+    <p>
+      Bu hızlarda bir bakır yol artık kablo gibi değil, dalga taşıyan bir boru
+      gibi davranıyor. Genişliği ya da altındaki düzleme uzaklığı değişirse
+      sinyalin bir kısmı yol boyunca geri yansıyıp hâlâ gelmekte olanla
+      çarpışıyor. Bu yüzden yollar denetimli empedansla çiziliyor ve bir grubun
+      birlikte varması gerekiyorsa hepsi aynı uzunlukta çiziliyor — bellek
+      yolundaki o küçük zikzakların sebebi bu. Süs değiller. Diğerlerini bekleyen
+      bir yol onlar.
+    </p>
+    <p>
+      Veri yollarının seri hâle gelmesinin sebebi de bu fiziksel sınır. Altmış
+      dört biti yan yana göndermek, birbirine pikosaniyeler içinde varması gereken
+      altmış dört yol demek ve hız arttıkça bu imkânsızlaşıyor. PCIe çok daha az
+      teli çok daha hızlı kullanıyor; her biri diferansiyel çift — aynı sinyalin
+      birbirinin tersi iki kopyasını taşıyan iki yol; böylece herhangi bir girişim
+      ikisini de aynı şekilde etkiliyor ve birini diğerinden çıkarınca yok oluyor.
+    </p>
+    <p>
+      Ve hiç gösterişli olmayan kısım: güç katları. Batarya on iki volt civarı
+      veriyor; işlemci ise çok yüksek akımda bir volt civarı istiyor ve çektiği
+      akım mikrosaniyeler içinde on kat değişirken bunun sabit kalmasını istiyor.
+      Soketin etrafına kümelenmiş bobinler ve kondansatörler, tam olarak bunu
+      yapan anahtarlamalı çeviriciler — saniyede milyonlarca kez. Bir laptop erken
+      öldüyse, genelde ölen budur.
+    </p>
+    <p class="outro">
+      Three.js ile yapıldı — bu sahnedeki her parça kod tarafından üretiliyor,
+      bir model dosyasından yüklenmiyor. Ve tarayıcına
+      <a href="/tr/projects/webserv/">C ile yazdığım bir web sunucusu</a>
+      tarafından ulaştırıldı.
+      <a class="back-home" href="/tr/projects/laptop-anatomy/">Nasıl yapıldığını oku →</a>
+    </p>
+  </section>
+
+</main>
+
+<script type="module" src="/lab/laptop/laptop.js"></script>
+</body>
+</html>

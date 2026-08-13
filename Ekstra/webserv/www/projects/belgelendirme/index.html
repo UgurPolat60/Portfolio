@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certification Platform — Uğur Polat</title>
+<meta name="description" content="A certification and audit management platform written deliberately without a framework: raw PDO, 20 MySQL tables, five user roles, AJAX mini-SPA pages.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/belgelendirme/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/belgelendirme/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#6c63ff">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">Web Platform · PHP</p>
+  <h1>Certification Platform</h1>
+  <p class="lede">
+    A certification and audit management platform, written without a framework
+    on purpose.
+  </p>
+  <ul class="proj__stack">
+    <li>PHP 8 (procedural)</li><li>PDO — real prepared statements</li>
+    <li>MySQL</li><li>Composer</li><li>Monolog 3.9</li><li>PHPMailer 6.10</li>
+    <li>Vanilla JavaScript</li><li>AJAX mini-SPA pages</li>
+  </ul>
+</header>
+
+<div class="demo">
+  <div class="demo__box">
+    <div>
+      <h3>Try it yourself — the real thing, running right now</h3>
+      <p>
+        Not a screenshot tour: the actual platform, with every feature live. Add
+        companies, issue certificates, plan audits, send mail. Your session gets
+        its own empty database, so you start from nothing and nobody else can see
+        what you type — and when you leave, the database is dropped.
+      </p>
+      <p class="demo__creds">login <b>admin</b> password <b>1234</b></p>
+      <p class="demo__note">Mail is captured in a demo inbox rather than sent to the internet.</p>
+    </div>
+    <a class="btn btn--solid demo__go" href="https://ugurpolat-certby.onrender.com/" target="_blank" rel="noopener">Open the demo →</a>
+  </div>
+</div>
+
+<div class="media" style="margin-top:2.5rem">
+  <figure>
+    <img src="/img/cert-dashboard.jpg" alt="The dashboard, redirected by user role">
+    <figcaption>
+      The dashboard redirects itself based on which of the five roles just
+      logged in.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      An end-to-end platform running the entire workflow of a certification and
+      audit body: company records, certificate lifecycles, audit planning,
+      expense tracking and reporting, all in one system. Laravel and Symfony
+      were both available. I chose raw PDO and procedural PHP instead, and I can
+      defend that decision.
+    </p>
+
+    <h2>Deliberately framework-free</h2>
+    <p>
+      Instead of Laravel or Symfony I chose raw PDO, procedural PHP and
+      hand-written vanilla JS components. Each page is a small self-contained
+      "mini-SPA" hosting its own AJAX endpoints. The goal was a system that
+      deploys quickly onto shared hosting with minimum dependencies, and that a
+      single engineer can hold entirely in their head. On a project like this,
+      that is worth more than a service container.
+    </p>
+
+    <h2>Five roles, one session model</h2>
+    <p>
+      Admin, accounting manager, auditor and consultant — five distinct roles
+      managed from a single session and security core, with the control panel
+      redirecting itself according to the role that logged in.
+    </p>
+
+    <h2>The certificate lifecycle</h2>
+    <p>
+      A complete lifecycle starting from the company registry and moving through
+      accreditation type, certifying body, document number, scope and validity
+      dates. The tracking tower flags certificates that are expiring or already
+      expired the moment you open it — which is the entire reason the business
+      wanted software in the first place.
+    </p>
+
+    <h2>The data layer</h2>
+    <p>
+      20 tables on MySQL, mostly in 3NF with selective foreign keys. Evidence
+      files are stored as binary (LONGBLOB); frequently-read counters use
+      deliberately denormalised fields for performance. Every query goes through
+      real prepared statements — not string concatenation with a hopeful
+      <code>addslashes()</code>.
+    </p>
+
+    <h2>Audit planning, expenses and reporting</h2>
+    <p>
+      Audit scheduling through the auditor field, tracking of consultancy and
+      training expenses and collections, a compliance reporting panel, and a
+      correspondence engine running on Monolog and PHPMailer — all built on the
+      same session and authorisation core.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>20</b><span>MySQL tables</span></div>
+        <div><b>5</b><span>user roles</span></div>
+        <div><b>0</b><span>PHP frameworks</span></div>
+        <div><b>2</b><span>Composer libraries</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Highlights</h3>
+      <ul>
+        <li>Framework-free architecture</li>
+        <li>Five roles, one session core</li>
+        <li>20-table MySQL schema</li>
+        <li>LONGBLOB evidence storage</li>
+        <li>Monolog + PHPMailer</li>
+        <li>AJAX mini-SPA pages</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Built for the constraint</h3>
+      <ul>
+        <li>Shared hosting, no root access</li>
+        <li>Two dependencies, not two hundred</li>
+        <li>Deployable by copying files</li>
+        <li>Maintainable by one person</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/cert-dashboard.jpg" alt="Role-based dashboard">
+    <figcaption>The dashboard, routed by role from a single session core.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/cert-tracking.jpg" alt="Certificate tracking tower showing expiring documents">
+    <figcaption>The tracking tower — expiring and expired certificates flagged on sight.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    A complex business process does not necessarily require a large framework —
+    properly layered procedural PHP can build a maintainable system even under
+    shared hosting constraints.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/java-tower-defense/">← Tower Defense (Java)</a>
+  <a href="/projects/django-portfolio/">Django Portfolio →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+</body>
+</html>

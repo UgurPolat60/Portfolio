@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uğur Polat — Software Engineer</title>
+<meta name="description" content="Computer engineer in İstanbul building websites, backends and games. C, Java, PHP, JavaScript, Django, Unity. This site runs on a web server I wrote myself in C.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="#about">About</a>
+    <a href="#server">This server</a>
+    <span class="lang"><a href="/" aria-current="true">EN</a><s>/</s><a href="/tr/">TR</a></span>
+    <a class="nav__cta" href="#contact">Hire me</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero__text">
+    <h1>I build the web from the <em>bottom</em> up.</h1>
+    <p class="lede">
+      Computer engineer, 23, based in İstanbul. I write websites, backends and
+      games — and when I say I know how something works, I mean I have built it
+      myself. Including the web server that is delivering this page to you
+      right now.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--solid" href="#contact">Start a project</a>
+      <a class="btn" href="/projects/">See my work</a>
+    </div>
+    <ul class="hero__meta">
+      <li>İstanbul, Türkiye</li>
+      <li>BSc Computer Engineering — Bolu Abant İzzet Baysal University</li>
+      <li>Currently at École 42 İstanbul</li>
+    </ul>
+  </div>
+
+  <div class="hero__portrait">
+    <img src="/img/ugur.jpg" alt="Uğur Polat">
+    <div class="hero__badge"><b>Uğur Polat</b>Software Engineer · İstanbul</div>
+  </div>
+</section>
+
+<section id="services" class="band">
+  <h2 class="h2">What I can do for you</h2>
+  <p class="sub">Three things I am genuinely good at, rather than ten I am not.</p>
+  <div class="grid grid--3">
+    <article class="card">
+      <div class="card__ico">01</div>
+      <h3>Websites that don't apologise</h3>
+      <p>I don't assemble templates. I write the HTML, the CSS and the backend,
+         and the result loads in under a second because nothing is in it that
+         doesn't need to be. If your current site takes five seconds to open, I
+         can tell you exactly which line is to blame.</p>
+      <p class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Django</span><span>PHP</span></p>
+    </article>
+    <article class="card">
+      <div class="card__ico">02</div>
+      <h3>Backends I can defend line by line</h3>
+      <p>I have written a 20-table management platform in raw PHP with no
+         framework, and an HTTP server in C with no libraries at all. There is
+         no layer of this stack I take on faith. Whatever runs behind your
+         screen, I have already built something harder than it.</p>
+      <p class="tags"><span>C</span><span>Java</span><span>PHP</span><span>Python</span><span>MySQL</span></p>
+    </article>
+    <article class="card">
+      <div class="card__ico">03</div>
+      <h3>Games built without a shopping cart</h3>
+      <p>Two Unity games where every model, texture and animation is mine — not
+         one asset store purchase in either. Plus a tower defense written in
+         Java with no engine underneath it: I wrote the render loop, the
+         threading and the level editor myself.</p>
+      <p class="tags"><span>Unity</span><span>Unreal</span><span>C#</span><span>Java</span></p>
+    </article>
+  </div>
+</section>
+
+<section id="work" class="band">
+  <h2 class="h2">Selected work</h2>
+  <p class="sub">Seven projects, seven different reasons they were hard.
+     <a href="/projects/">See all →</a></p>
+
+  <div class="work">
+    <a href="/projects/rage-attack/">
+      <img src="/img/rage-overview.jpg" alt="Rage Attack — the village seen from above">
+      <div class="work__body">
+        <p class="work__kind">Unity · Game</p>
+        <h3>Rage Attack</h3>
+        <p>A whole village, and every single villager running its own five-stage
+           rage state machine. No scripted set pieces — every riot is emergent.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/kitchen-rush/">
+      <img src="/img/kitchen-1.jpg" alt="Kitchen Rush — kitchen stations and prepared ingredients">
+      <div class="work__body">
+        <p class="work__kind">Unity · Game</p>
+        <h3>Kitchen Rush</h3>
+        <p>A cooking game built on real-time pressure. Six interactive stations
+           behind one interface, and every 3D model made by hand.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/java-tower-defense/">
+      <img src="/img/java-combat.jpg" alt="Java tower defense — wave 9 in progress">
+      <div class="work__body">
+        <p class="work__kind">Java · Desktop game</p>
+        <h3>Tower Defense (Java)</h3>
+        <p>Written with Java and Swing and nothing else. Sprite engine, two
+           threads, enemy AI and my own map editor — all by hand.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/belgelendirme/">
+      <img src="/img/cert-dashboard.jpg" alt="Certification platform dashboard">
+      <div class="work__body">
+        <p class="work__kind">PHP · Web platform</p>
+        <h3>Certification Platform</h3>
+        <p>Audit planning, certificate lifecycles and five user roles across 20
+           MySQL tables — deliberately written without a framework.</p>
+        <p class="work__more">Live demo + case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/django-portfolio/">
+      <img src="/img/dj-home.jpg" alt="The Django portfolio site">
+      <div class="work__body">
+        <p class="work__kind">Python · Django</p>
+        <h3>Django Portfolio</h3>
+        <p>My other site: an animated constellation background, a canvas
+           particle field and orbiting skill tags — all on a database-free
+           Django build.</p>
+        <p class="work__more">Live site + case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/laptop-anatomy/">
+      <img src="/img/laptop-cover.jpg" alt="Exploded 3D view of a laptop">
+      <div class="work__body">
+        <p class="work__kind">Three.js · WebGL</p>
+        <h3>Anatomy of a Laptop</h3>
+        <p>Scroll and a laptop comes apart — deck, processor, memory, graphics,
+           cooling. Every part generated in code, no model files.</p>
+        <p class="work__more">Live experience + case study →</p>
+      </div>
+    </a>
+
+    <a href="/projects/webserv/">
+      <img src="/img/webserv-cover.svg" alt="webserv terminal output">
+      <div class="work__body">
+        <p class="work__kind">C · Systems</p>
+        <h3>webserv</h3>
+        <p>The server this page runs on. An HTTP/1.1 server written from an
+           empty file in C — no libraries, one <code>poll()</code> loop serving
+           every visitor at once.</p>
+        <p class="work__more">Case study →</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="about" class="band band--alt">
+  <h2 class="h2">About me</h2>
+  <p class="sub">The long version, since you are going to be working with me and not with a CV.</p>
+
+  <div class="split">
+    <div class="prose">
+      <p>I am a computer engineering graduate of Bolu Abant İzzet Baysal
+         University, 23 years old, living in Bahçelievler, İstanbul. I am
+         currently a student at École 42 İstanbul — a school with no grades, no
+         teachers and no lectures, where the entire curriculum is projects and
+         peer evaluation. It suits me, because it is how I was already learning
+         anyway.</p>
+
+      <p>There is a pattern to everything I have built: I go one level lower
+         than I need to. My university final project was a tower defense game,
+         and instead of opening Unity I wrote it in Java and Swing — sprite
+         cutting, the render loop, threading, an enemy AI, and a tile-based map
+         editor, all by hand. I built a certification and audit platform for a
+         real business process and deliberately refused Laravel, writing it on
+         raw PDO instead so I would understand what a framework actually does
+         for you. And the page you are reading is being delivered by an HTTP
+         server I wrote in C, because I did not want the web to be a black box
+         to me.</p>
+
+      <p>This is not stubbornness for its own sake. It means that when
+         something breaks at two in the morning, I am not waiting for a
+         maintainer to answer an issue — I already know where the problem is,
+         because I have been down there.</p>
+
+      <p>On the other side of that, I ship. Two Unity games where every model,
+         texture, animation and UI element is mine. A Django portfolio site. A
+         PHP platform with five user roles running on shared hosting. I have
+         worked in software and outside it, and I know that a project ends when
+         someone is actually using it, not when the code compiles.</p>
+
+      <p>I enjoy learning new things — genuinely, not as a line on a CV. I work
+         well in a team, I ask questions early rather than guessing, and I would
+         rather tell you a deadline is unrealistic than discover it with you
+         later.</p>
+    </div>
+
+    <div>
+      <ul class="timeline">
+        <li>
+          <em>Ongoing</em>
+          <b>École 42 İstanbul</b>
+          <p>Software engineering, project-based. No grades, no teachers,
+             entirely peer-to-peer evaluation. Currently working through the C
+             curriculum.</p>
+        </li>
+        <li>
+          <em>Graduated</em>
+          <b>Bolu Abant İzzet Baysal University</b>
+          <p>BSc Computer Engineering. Final year project: a tower defense game
+             written from scratch in Java, with no game engine involved.</p>
+        </li>
+        <li>
+          <em>Alongside</em>
+          <b>Freelance &amp; work experience</b>
+          <p>Software work plus experience in other sectors — which is where I
+             learned to talk to people who do not care what a framework is.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="h2" style="margin-top:3.5rem">Skills</h2>
+  <p class="sub">Honest levels. I would rather under-promise here than in a meeting.</p>
+  <div class="skills">
+    <section>
+      <h3>Languages</h3>
+      <ul>
+        <li>C <span class="bars">█████</span></li>
+        <li>Java <span class="bars">█████</span></li>
+        <li>PHP <span class="bars">█████</span></li>
+        <li>JavaScript <span class="bars">████<i>█</i></span></li>
+        <li>C# <span class="bars">████<i>█</i></span></li>
+        <li>Python <span class="bars">███<i>██</i></span></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Web</h3>
+      <ul>
+        <li>HTML <span class="bars">█████</span></li>
+        <li>CSS <span class="bars">█████</span></li>
+        <li>Django <span class="bars">████<i>█</i></span></li>
+        <li>AJAX / vanilla JS <span class="bars">████<i>█</i></span></li>
+        <li>HTTP &amp; sockets <span class="bars">████<i>█</i></span></li>
+        <li>MySQL <span class="bars">████<i>█</i></span></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Games</h3>
+      <ul>
+        <li>Unity <span class="bars">█████</span></li>
+        <li>Unreal <span class="bars">███<i>██</i></span></li>
+        <li>NavMesh AI <span class="bars">████<i>█</i></span></li>
+        <li>Editor tooling <span class="bars">█████</span></li>
+        <li>3D modelling <span class="bars">████<i>█</i></span></li>
+        <li>Animation pipeline <span class="bars">███<i>██</i></span></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Tools &amp; practice</h3>
+      <ul>
+        <li>Git <span></span></li>
+        <li>Composer <span></span></li>
+        <li>NUnit testing <span></span></li>
+        <li>Eclipse / VS <span></span></li>
+        <li>Object-oriented design <span></span></li>
+        <li>Multithreading <span></span></li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+<section id="server" class="band">
+  <div class="split">
+    <div>
+      <p class="eyebrow">Under the hood</p>
+      <h2 class="h2">This page was not served by Apache.</h2>
+      <p class="lede">
+        Every website runs on a program that listens on a port, reads the
+        browser's request and writes the answer back. Almost everyone rents
+        that program — nginx, Apache, whatever the host provides.
+      </p>
+      <p class="lede">
+        I wrote mine. In C, from an empty file, using nothing but the standard
+        library and POSIX sockets. It parses HTTP/1.1 by hand, serves every
+        image and video on this site, keeps connections alive, and refuses to be
+        talked into handing out files outside its own directory.
+      </p>
+      <p class="lede">
+        I did not do this because it is the practical choice. I did it because
+        after this, nothing about the web is a black box to me.
+      </p>
+      <div class="hero__actions">
+        <a class="btn" href="/projects/webserv/">Read how it works →</a>
+      </div>
+    </div>
+    <ul class="stats">
+      <li><b>0</b><span>external dependencies</span></li>
+      <li><b>~800</b><span>lines of C</span></li>
+      <li><b>1</b><span>poll() loop, no threads</span></li>
+      <li><b>256</b><span>simultaneous connections</span></li>
+    </ul>
+  </div>
+
+  <div class="term" style="margin-top:3rem" aria-hidden="true">
+    <div class="term__bar"><span></span><span></span><span></span>
+      <p>bash — webserv</p>
+    </div>
+<pre class="term__body"><span class="c">$</span> make
+cc -Wall -Wextra -Werror -O2 -Iinclude -c src/main.c
+cc -Wall -Wextra -Werror -O2 -Iinclude -c src/http.c
+cc -Wall -Wextra -Werror -O2 -o webserv
+
+<span class="c">$</span> ./webserv 8080 www
+webserv listening on http://localhost:8080
+GET  /                            200
+GET  /img/ugur.png                200
+GET  /media/rage-attack.mp4       200
+GET  /../../../etc/passwd         403
+POST /contact                     200
+   -&gt; contact: new client &lt;hello@example.com&gt;<span class="cur">█</span></pre>
+  </div>
+
+  <div class="flow" aria-label="Request lifecycle">
+    <div><b>browser</b><span>GET /index.html</span></div>
+    <i>→</i>
+    <div><b>accept()</b><span>new connection</span></div>
+    <i>→</i>
+    <div><b>parse</b><span>method, path, headers</span></div>
+    <i>→</i>
+    <div><b>resolve</b><span>path checked against docroot</span></div>
+    <i>→</i>
+    <div><b>respond</b><span>200 + file bytes</span></div>
+  </div>
+</section>
+
+<section id="contact" class="band">
+  <h2 class="h2">Let's talk about your project</h2>
+  <p class="lede">
+    Tell me what you need built. I answer every message, and I will tell you
+    honestly if it is not something I should be the one to build.
+  </p>
+  <ul class="contact__list">
+    <li><span>Email</span><a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></li>
+    <li><span>Location</span>İstanbul, Bahçelievler</li>
+    <li><span>Languages</span>Turkish (native), English</li>
+    <li><span>Response</span>Usually within a day</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}{{ ui.title_projects }}{% endblock %}
+{% block body_class %}page-projects{% endblock %}
+
+{% block content %}
+
+<section class="hero hero--sub" data-mood="brag">
+  <div class="hero__overlay"></div>
+  <div class="orbit orbit--hero" aria-hidden="true" style="--n:{{ projects|length }}">
+    <div class="orbit__ring orbit__ring--a">
+      {% for project in projects %}
+      <div class="orbit__item" style="--i:{{ forloop.counter0 }}">
+        <span class="orbit__badge" style="border-color:{{ project.accent }}">{{ project.name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="hero__content reveal in">
+    <p class="hero__eyebrow">{{ ui.projects_eyebrow }}</p>
+    <h1 class="hero__title">{{ ui.title_projects }}</h1>
+    <p class="hero__tagline">{{ ui.projects_tagline }}</p>
+  </div>
+</section>
+
+<section class="section" data-mood="brag">
+  <div class="section__inner">
+    <div class="project-grid">
+      {% for project in projects %}
+      <a class="project-card tilt reveal" style="--accent:{{ project.accent }}" href="{% url 'portfolio:project_detail' project.slug %}">
+        <div class="project-card__media">
+          <img src="{% static project.cover %}" alt="{{ project.name }}" loading="lazy">
+        </div>
+        <div class="project-card__body">
+          <span class="project-card__kind">{{ project.kind }}</span>
+          <h2>{{ project.name }}</h2>
+          <p>{{ project.tagline }}</p>
+          <div class="chip-row">
+            {% for tech in project.stack|slice:":4" %}<span class="chip">{{ tech }}</span>{% endfor %}
+          </div>
+          <span class="project-card__cta">{{ ui.card_cta }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

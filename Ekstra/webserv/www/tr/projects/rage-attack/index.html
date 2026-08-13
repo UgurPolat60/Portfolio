@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rage Attack — Uğur Polat</title>
+<meta name="description" content="Her köylünün bağımsız bir beş aşamalı öfke durum makinesi çalıştırdığı bir Unity oyunu. Solo proje: yapay zeka, VFX, modeller ve 90+ özel editor aracı.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/tr/projects/">Projeler</a>
+    <a href="/tr/#about">Hakkımda</a>
+    <a href="/tr/#server">Bu sunucu</a>
+    <span class="lang"><a href="/projects/rage-attack/">EN</a><s>/</s><a href="/tr/projects/rage-attack/" aria-current="true">TR</a></span>
+    <a class="nav__cta" href="/tr/#contact">Benimle çalış</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#b25cff">
+
+<header class="proj__head">
+  <a class="back" href="/tr/projects/">← tüm projeler</a>
+  <p class="eyebrow">Unity Oyunu · Solo Proje</p>
+  <h1>Rage Attack</h1>
+  <p class="lede">
+    Bir sinek, bir köy, tam bir sinir krizi — sahnelenmiş anlar yerine sistemik
+    yapay zeka üzerine kurulu bir kaos oyunu.
+  </p>
+  <ul class="proj__stack">
+    <li>Unity (URP)</li><li>C#</li><li>NavMesh AI</li><li>Yeni Input System</li>
+    <li>ScriptableObject</li><li>Coroutine durum makineleri</li>
+    <li>Prosedürel VFX</li><li>Çalışma zamanında üretilen arayüz</li>
+    <li>Özel Editor araçları</li><li>Mixamo rig hattı</li><li>TextMeshPro</li>
+  </ul>
+</header>
+
+<!-- VIDEO: şimdilik kapalı. Geri gelince aşağıdaki bloğu aç ve
+     /tr/index.html ile /tr/projects/index.html'de "Video + vaka analizi"ni geri koy.
+<div class="media">
+  <figure>
+    <video controls preload="metadata" poster="/img/rage-poster.jpg">
+      <source src="/media/rage-attack.mp4" type="video/mp4">
+      Tarayıcın bu videoyu oynatamıyor.
+    </video>
+    <figcaption>
+      Unity build'inden kaydedilen oynanış. Can ve stres barlarına dikkat et:
+      ekrandaki hiçbir şey koreografi değil — her köylü kendi kararını veriyor.
+    </figcaption>
+    <p class="vkeys">
+      <span><kbd>←</kbd> <kbd>→</kbd> 5sn</span>
+      <span><kbd>J</kbd> <kbd>L</kbd> 10sn</span>
+      <span><kbd>boşluk</kbd> oynat</span>
+      <span><kbd>F</kbd> tam ekran</span>
+      <span><kbd>0</kbd>–<kbd>9</kbd> atla</span>
+    </p>
+  </figure>
+</div>
+-->
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Oyuncu bir karasinek — ya da sonradan açılan RobotSinek — rolünde bütün
+      bir köyün üzerine üşüşüyor. Sahnedeki her NPC kendi bağımsız stres
+      simülasyonunu çalıştırıyor ve beş aşamalı bir öfke durum makinesiyle hafif
+      rahatsızlıktan silahlanıp saldırmaya kadar tırmanıyor. Asıl mühendislik
+      problemi sinek değildi. Köyü canlı ve gerçekten kontrolden çıkmış
+      hissettirmekti.
+    </p>
+
+    <h2>Sinir yönetimi: beş aşamalı NPC öfke FSM'i</h2>
+    <p>
+      Köydeki her karakter kendi öfke durum makinesini çalıştırıyor: hafif
+      rahatsızlıktan başlayıp tetiklenme, panik ve nihayet silahlanıp saldırıya
+      kadar beş aşamada tırmanıyor. Bu oyunda sahnelenmiş tek bir setpiece yok.
+      Her kavga, her isyan, her kaçışma bu bağımsız durum makinelerinin
+      birbirini ve oyuncuyu görmesinin yan etkisi.
+    </p>
+
+    <h2>İki oynanabilir karakter, tamamen farklı yetenek setleri</h2>
+    <p>
+      Varsayılan çevik sinekle başlıyorsun. Daha güçlü RobotSinek oyun içi
+      öldürme sayısına bağlı olarak açılıyor ve yetenek kiti baştan sona farklı —
+      bir istatistik çarpanı değil, bambaşka bir oynama biçimi.
+    </p>
+
+    <h2>XP, kart tabanlı yükseltmeler ve roguelite ilerleme</h2>
+    <p>
+      Köylüleri tahrik ederek kazanılan XP, oyun içinde kart tabanlı yetenek
+      seçimleri açan bir seviye atlama sistemine besleniyor. Kart arayüzü hazır
+      bir UI paketi değil, tamamen kod üzerinden çalışma zamanında üretiliyor.
+    </p>
+
+    <h2>NavMesh tabanlı AI ve prosedürel VFX</h2>
+    <p>
+      Köylülerin hareketi NavMesh üzerinde çözülüyor. Hastalık yayılması, panik
+      ve misilleme gibi efektlerin çoğu Shuriken editöründen değil, doğrudan kod
+      üzerinden büyütülen prosedürel VFX ile üretiliyor — kimsenin önceden
+      yazmadığı bir duruma tepki verebilmelerinin sebebi de bu.
+    </p>
+
+    <h2>90'dan fazla özel Editor aracı</h2>
+    <p>
+      Köyü sahne içinde hızlıca kurup dengelemek için 90'ın üzerinde özel Unity
+      Editor aracı yazdım. Tek başına geliştirilen bir projede bu, tüm sürecin en
+      çok geri dönüş sağlayan yatırımı oldu — araçlar en az oynanış kodu kadar
+      önemliydi.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>Bir bakışta</h3>
+      <div class="side__nums">
+        <div><b>5</b><span>aşamalı öfke FSM'i</span></div>
+        <div><b>2</b><span>oynanabilir karakter</span></div>
+        <div><b>90+</b><span>özel editor aracı</span></div>
+        <div><b>0</b><span>sahnelenmiş setpiece</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Öne çıkanlar</h3>
+      <ul>
+        <li>Beş aşamalı öfke FSM'i</li>
+        <li>NavMesh tabanlı AI</li>
+        <li>Prosedürel VFX</li>
+        <li>90+ editor aracı</li>
+        <li>Kart tabanlı roguelite ilerleme</li>
+        <li>Çalışma zamanında üretilen arayüz</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Sıfırdan üretildi</h3>
+      <ul>
+        <li>Her bina ve obje</li>
+        <li>Her karakter animasyonu</li>
+        <li>Tüm VFX</li>
+        <li>Arayüzün tamamı</li>
+        <li>Asset paketi yok, üçüncü parti araç yok</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/rage-overview.jpg" alt="Köyün genel görünümü">
+    <figcaption>Köy — simülasyon oyuncunun etrafındaki bir balonda değil, her yerde aynı anda çalışıyor.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/rage-stress.jpg" alt="Köylülerin canlı stres ve öfke barları">
+    <figcaption>Canlı stres ve öfke barları. Her biri bağımsız bir ajanın iç durumu.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/rage-cards.jpg" alt="Kart tabanlı yetenek seçim ekranı">
+    <figcaption>Kart tabanlı yetenek seçimi, çalışma zamanında kod ile üretiliyor.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/rage-editor.jpg" alt="Özel editor araçlarıyla sahne kurulumu">
+    <figcaption>Özel editor araçlarıyla sahne kurulumu.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Emergent kaosu scriptlenmiş setpiece'lere tercih etmek — her NPC'yi stres,
+    görüş hattı ve birbirleriyle etkileşime tepki veren bağımsız bir ajan gibi
+    tasarlamak — bu projenin çekirdeği.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/tr/projects/webserv/">← webserv</a>
+  <a href="/tr/projects/kitchen-rush/">Kitchen Rush →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p><a href="/tr/projects/webserv/">webserv</a> tarafından servis ediliyor — C ile yazılmış bir web sunucusu.</p>
+</footer>
+<script src="/site.js"></script>
+</body>
+</html>

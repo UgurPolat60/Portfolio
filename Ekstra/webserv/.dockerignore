@@ -1,0 +1,6 @@
+webserv
+*.o
+src/*.o
+contact.log
+tests
+README.md

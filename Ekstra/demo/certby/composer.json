@@ -1,0 +1,7 @@
+{
+    "name": "certby/project",
+    "require": {
+        "monolog/monolog": "^3.9",
+        "phpmailer/phpmailer": "^6.10"
+    }
+}

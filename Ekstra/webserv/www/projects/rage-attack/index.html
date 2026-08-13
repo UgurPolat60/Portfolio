@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rage Attack — Uğur Polat</title>
+<meta name="description" content="A Unity game where every villager runs an independent five-stage rage state machine. Solo project: AI, VFX, models and 90+ custom editor tools.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/rage-attack/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/rage-attack/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#b25cff">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">Unity Game · Solo Project</p>
+  <h1>Rage Attack</h1>
+  <p class="lede">
+    One fly, one village, one complete nervous breakdown — a chaos game built
+    on systemic AI rather than scripted set pieces.
+  </p>
+  <ul class="proj__stack">
+    <li>Unity (URP)</li><li>C#</li><li>NavMesh AI</li><li>New Input System</li>
+    <li>ScriptableObject</li><li>Coroutine state machines</li>
+    <li>Procedural VFX</li><li>Runtime-generated UI</li>
+    <li>Custom editor tooling</li><li>Mixamo rig pipeline</li><li>TextMeshPro</li>
+  </ul>
+</header>
+
+<!-- VIDEO: temporarily out. Put the block below back and restore
+     "Video + case study" on /index.html and /projects/index.html.
+<div class="media">
+  <figure>
+    <video controls preload="metadata" poster="/img/rage-poster.jpg">
+      <source src="/media/rage-attack.mp4" type="video/mp4">
+      Your browser cannot play this video.
+    </video>
+    <figcaption>
+      Gameplay, recorded from the Unity build. Watch the health and stress bars:
+      nothing on screen is choreographed — every villager is deciding for itself.
+    </figcaption>
+    <p class="vkeys">
+      <span><kbd>←</kbd> <kbd>→</kbd> 5s</span>
+      <span><kbd>J</kbd> <kbd>L</kbd> 10s</span>
+      <span><kbd>space</kbd> play</span>
+      <span><kbd>F</kbd> fullscreen</span>
+      <span><kbd>0</kbd>–<kbd>9</kbd> jump</span>
+    </p>
+  </figure>
+</div>
+-->
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      The player takes the role of a housefly — or RobotFly, unlocked later —
+      and descends on an entire village. Every NPC in the scene runs its own
+      independent stress simulation, escalating through a five-stage rage state
+      machine from mild irritation all the way to arming itself and attacking.
+      The real engineering problem was not the fly. It was making the village
+      feel alive and genuinely out of control.
+    </p>
+
+    <h2>Nerve management: a five-stage NPC rage FSM</h2>
+    <p>
+      Every character in the village runs its own rage state machine, escalating
+      through five stages: mild irritation, provocation, panic, and finally
+      arming and attacking. There are no staged set pieces in this game. Every
+      fight, every riot, every stampede is a side effect of these independent
+      state machines noticing each other and noticing the player.
+    </p>
+
+    <h2>Two playable characters, entirely different kits</h2>
+    <p>
+      You start as the agile fly. The heavier RobotFly unlocks based on in-game
+      kill count, and its ability set is different from top to bottom — not a
+      stat multiplier, a different way to play.
+    </p>
+
+    <h2>XP, card-based upgrades and roguelite progression</h2>
+    <p>
+      Provoking villagers earns XP, which feeds a levelling system that offers
+      card-based ability choices mid-run. The card interface is not a UI package
+      — it is generated entirely in code at runtime.
+    </p>
+
+    <h2>NavMesh AI and procedural VFX</h2>
+    <p>
+      Villager movement is solved on a NavMesh. Most of the effects — disease
+      spread, panic, retaliation — are not authored in the Shuriken editor but
+      grown procedurally from code, which is what lets them react to a situation
+      nobody scripted in advance.
+    </p>
+
+    <h2>More than 90 custom editor tools</h2>
+    <p>
+      To build and balance the village inside the scene I wrote over 90 custom
+      Unity Editor tools. On a solo project this turned out to be the highest
+      return investment of the whole build — the tooling mattered as much as the
+      gameplay code did.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>5</b><span>stage rage FSM</span></div>
+        <div><b>2</b><span>playable characters</span></div>
+        <div><b>90+</b><span>custom editor tools</span></div>
+        <div><b>0</b><span>staged set pieces</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Highlights</h3>
+      <ul>
+        <li>Five-stage rage FSM</li>
+        <li>NavMesh-driven AI</li>
+        <li>Procedural VFX</li>
+        <li>90+ editor tools</li>
+        <li>Card-based roguelite progression</li>
+        <li>Runtime-generated UI</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Made from scratch</h3>
+      <ul>
+        <li>Every building and prop</li>
+        <li>Every character animation</li>
+        <li>All VFX</li>
+        <li>The entire interface</li>
+        <li>No asset packs, no third-party tools</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/rage-overview.jpg" alt="The village seen from above">
+    <figcaption>The village — the whole simulation runs at once, not in a bubble around the player.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/rage-stress.jpg" alt="Live stress and rage bars above the villagers">
+    <figcaption>Live stress and rage bars. Each one is an independent agent's internal state.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/rage-cards.jpg" alt="Card-based ability selection screen">
+    <figcaption>Card-based ability selection, generated in code at runtime.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/rage-editor.jpg" alt="Building the scene with custom editor tools">
+    <figcaption>Scene construction through custom editor tooling.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Choosing emergent chaos over scripted set pieces — designing every NPC as an
+    independent agent that reacts to stress, line of sight and each other — is
+    the core of this project.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/webserv/">← webserv</a>
+  <a href="/projects/kitchen-rush/">Kitchen Rush →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+<script src="/site.js"></script>
+</body>
+</html>

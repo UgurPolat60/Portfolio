@@ -1,0 +1,50 @@
+{% load static %}<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Uğur Polat{% endblock %} — CV</title>
+<meta name="description" content="{{ ui.site_description }}">
+<link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'portfolio/css/animations.css' %}">
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+</head>
+<body class="{% block body_class %}{% endblock %}" style="{% if accent %}--accent:{{ accent }};{% endif %}">
+
+<canvas id="bg-canvas"></canvas>
+
+<div id="mood-box" class="mood-box" data-state="idle">
+  <div class="mood-box__stage">
+    <img class="mood-photo" data-face="idle" src="{% static 'portfolio/img/mood/idle.png' %}" alt="">
+    <img class="mood-photo" data-face="scared" src="{% static 'portfolio/img/mood/scared.png' %}" alt="">
+    <img class="mood-photo" data-face="brag" src="{% static 'portfolio/img/mood/brag.png' %}" alt="">
+    <img class="mood-photo" data-face="graduate" src="{% static 'portfolio/img/mood/graduate.png' %}" alt="">
+  </div>
+  <div class="mood-box__name">UĞUR POLAT</div>
+</div>
+
+
+<header class="nav">
+  <nav class="nav__links">
+    <a href="{% url 'portfolio:home' %}">{{ ui.nav_home }}</a>
+    <a href="{% url 'portfolio:home' %}#cv">{{ ui.nav_cv }}</a>
+    <a href="{% url 'portfolio:project_list' %}" data-mood="brag">{{ ui.nav_projects }}</a>
+    <a href="{% url 'portfolio:home' %}#iletisim">{{ ui.nav_contact }}</a>
+    <a class="nav__lang" href="{{ other_lang_url }}" hreflang="{{ other_lang }}">{{ other_lang|upper }}</a>
+  </nav>
+</header>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <p>Uğur Polat &copy; {% now "Y" %} — {{ ui.footer }}</p>
+</footer>
+
+<script src="{% static 'portfolio/js/effects.js' %}"></script>
+<script src="{% static 'portfolio/js/cursor.js' %}"></script>
+<script src="{% static 'portfolio/js/showcase.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

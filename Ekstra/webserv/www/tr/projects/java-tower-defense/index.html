@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kule Savunma (Java) — Uğur Polat</title>
+<meta name="description" content="Hiçbir oyun motoru kullanmadan, sıfırdan Java ve Swing ile yazılmış bir kule savunma oyunu: sprite motoru, iki iş parçacığı, düşman yapay zekası ve kendi harita editörüm.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/tr/projects/">Projeler</a>
+    <a href="/tr/#about">Hakkımda</a>
+    <a href="/tr/#server">Bu sunucu</a>
+    <span class="lang"><a href="/projects/java-tower-defense/">EN</a><s>/</s><a href="/tr/projects/java-tower-defense/" aria-current="true">TR</a></span>
+    <a class="nav__cta" href="/tr/#contact">Benimle çalış</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#f2b84c">
+
+<header class="proj__head">
+  <a class="back" href="/tr/projects/">← tüm projeler</a>
+  <p class="eyebrow">Masaüstü Oyun · Üniversite Bitirme Projesi</p>
+  <h1>Kule Savunma (Java)</h1>
+  <p class="lede">
+    Hiçbir oyun motoruna dokunmadan, boş bir dosyadan Java ile yazılmış bir kule
+    savunma oyunu.
+  </p>
+  <ul class="proj__stack">
+    <li>Java</li><li>Swing (JFrame / JPanel)</li><li>AWT — Graphics2D</li>
+    <li>BufferedImage &amp; sprite kesme</li><li>Nesne yönelimli tasarım</li>
+    <li>Kalıtım &amp; çokbiçimlilik</li><li>Çoklu iş parçacığı</li>
+    <li>Olay güdümlü girdi</li><li>Dosya G/Ç ile kayıt &amp; yükleme</li>
+  </ul>
+</header>
+
+<div class="media">
+  <figure>
+    <img src="/img/java-hud.png" alt="Oyun 9/9 dalgada duraklatılmış, altın ve canlar HUD'da görünüyor">
+    <figcaption>
+      Dalga 9 / 9. Altın, canlar, kule seçimi ve dalga durumu — HUD'un tamamı
+      Graphics2D ile çizildi, çünkü benim yerime çizecek bir motor yoktu.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Bolu Abant İzzet Baysal Üniversitesi'ndeki bilgisayar mühendisliği eğitimim
+      sırasında, Unity ya da Godot gibi hiçbir hazır motora dokunmadan, sadece
+      Java ve Swing ile yazıldı. Haritayı çizen sprite motorundan düşman
+      dalgalarını yöneten yapay zekaya kadar her satır kendi elimden çıktı.
+    </p>
+
+    <h2>Sahne tabanlı bir durum makinesi</h2>
+    <p>
+      Menü, Oynanıyor, Oyun Bitti ve Düzenleme (harita editörü) sahneleri ayrı
+      ayrı duruyor ve aralarındaki geçiş ortak bir sahne arayüzü üzerinden
+      yönetiliyor. Her sahne kendi güncelleme ve çizim döngüsünden sorumlu; ortak
+      akış tek bir merkezden yönetiliyor. Bu, çoğu eğitimin atladığı ve çoğu
+      projenin sonradan atladığına pişman olduğu yapı.
+    </p>
+
+    <h2>İki iş parçacığı, tek tutarlı ritim</h2>
+    <p>
+      Oyun mantığının güncellenmesi ile ekrana çizim ayrı ritimlerde ilerliyor ve
+      tutarlı bir kare hızı için senkronize ediliyor. Bu, ilk kez bir çoklu iş
+      parçacığı problemini başkasının gerçekten çalıştıracağı bir üründe uçtan
+      uca çözdüğüm proje oldu.
+    </p>
+
+    <h2>Yönetici katmanına bölünmüş sorumluluklar</h2>
+    <p>
+      DalgaYoneticisi, DusmanYoneticisi, KuleYoneticisi, FuzeYoneticisi ve
+      HaritaYoneticisi — her sorumluluk kendi sınıfında yaşıyor. Ork ve Yarasa
+      gibi düşman tipleri ortak bir Dusman sınıfından türüyor, yani yeni bir
+      düşman eklemek tek bir alt sınıf yazmaktan ibaret.
+    </p>
+
+    <h2>Kendi harita editörüm</h2>
+    <p>
+      Karo tabanlı bir düzenleyici yazdım: başlangıç/bitiş noktaları ve yol
+      serbestçe döşenip kendi dosya formatımda diske kaydediliyor, bir
+      kayıt/yükleme sınıfı üzerinden tekrar yükleniyor. Ekran görüntülerindeki
+      harita da bu editörle tasarlandı. Aracı yazmak, karoları iki kez elle
+      dizmekten hızlıydı.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>Bir bakışta</h3>
+      <div class="side__nums">
+        <div><b>3</b><span>kule tipi</span></div>
+        <div><b>2</b><span>düşman türü</span></div>
+        <div><b>9+</b><span>dalga</span></div>
+        <div><b>0</b><span>kullanılan oyun motoru</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Öne çıkanlar</h3>
+      <ul>
+        <li>Sahne tabanlı durum makinesi</li>
+        <li>Çok iş parçacıklı güncelleme/çizim</li>
+        <li>Özel karo harita editörü</li>
+        <li>Kalıtım tabanlı düşman sistemi</li>
+        <li>Diske kayıt ve yükleme</li>
+        <li>Sprite sayfası animasyonu</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Elle yazıldı</h3>
+      <ul>
+        <li>Render döngüsü</li>
+        <li>Sprite sayfalarından kesme</li>
+        <li>Çarpışma ve hedefleme</li>
+        <li>Dalga temposu ve zorluk</li>
+        <li>Harita editörü ve dosya formatı</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/java-combat.jpg" alt="Okçu ve topçu kuleleri orklara ve yarasalara ateş ediyor">
+    <figcaption>Okçu ve topçu kuleleri orklara ve yarasalara karşı hattı tutuyor.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/java-editor.png" alt="Karo tabanlı harita editörü">
+    <figcaption>Karo tabanlı harita editörü — kendi aracım, kendi dosya formatım.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/java-map.png" alt="Düşman yoluyla birlikte tam harita">
+    <figcaption>Bitmiş harita. Su, duvarlar ve yol yukarıdaki editörle döşendi.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/java-menu.png" alt="Ana menü: Oyna, Düzenle, Çıkış">
+    <figcaption>Ana menü. Oyna, Düzenle, Çıkış — üç sahne, tek durum makinesi.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Karmaşık bir sistemi birbirinden bağımsız ve test edilebilir parçalara
+    ayırarak inşa etmek — bu projenin bana kazandırdığı en kalıcı yetkinlik oldu.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/tr/projects/kitchen-rush/">← Kitchen Rush</a>
+  <a href="/tr/projects/belgelendirme/">Belgelendirme Platformu →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p><a href="/tr/projects/webserv/">webserv</a> tarafından servis ediliyor — C ile yazılmış bir web sunucusu.</p>
+</footer>
+</body>
+</html>

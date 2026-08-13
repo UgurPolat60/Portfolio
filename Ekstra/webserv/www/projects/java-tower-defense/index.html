@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tower Defense (Java) — Uğur Polat</title>
+<meta name="description" content="A tower defense game written from scratch in Java and Swing with no game engine: sprite renderer, two threads, enemy AI and a custom tile map editor.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/java-tower-defense/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/java-tower-defense/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj" style="--proj:#f2b84c">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">Desktop Game · University Final Project</p>
+  <h1>Tower Defense (Java)</h1>
+  <p class="lede">
+    A tower defense game written from an empty file in Java, without touching a
+    game engine of any kind.
+  </p>
+  <ul class="proj__stack">
+    <li>Java</li><li>Swing (JFrame / JPanel)</li><li>AWT — Graphics2D</li>
+    <li>BufferedImage &amp; sprite slicing</li><li>Object-oriented design</li>
+    <li>Inheritance &amp; polymorphism</li><li>Multithreading</li>
+    <li>Event-driven input</li><li>File I/O save &amp; load</li>
+  </ul>
+</header>
+
+<div class="media">
+  <figure>
+    <img src="/img/java-hud.png" alt="The game paused at wave 9 of 9, gold and lives visible in the HUD">
+    <figcaption>
+      Wave 9 of 9. Gold, lives, tower selection and wave state — the entire HUD
+      drawn with Graphics2D, because there was no engine to draw it for me.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Built during my computer engineering degree at Bolu Abant İzzet Baysal
+      University, without touching Unity, Godot or any other ready-made engine —
+      only Java and Swing. From the sprite engine that draws the map to the AI
+      that runs the enemy waves, every line came from me.
+    </p>
+
+    <h2>A scene-based state machine</h2>
+    <p>
+      Menu, Playing, Game Over and Edit (the map editor) are separate scenes,
+      and transitions between them run through a shared scene interface. Each
+      scene owns its own update and draw loop; the common flow is managed from a
+      single place. This is the structure most tutorials skip and most projects
+      later regret skipping.
+    </p>
+
+    <h2>Two threads, one consistent rhythm</h2>
+    <p>
+      Game logic updates and screen rendering run at different rhythms and are
+      synchronised to hold a consistent frame rate. This was the first project
+      where I solved a real multithreading problem end to end in something
+      someone else would actually run.
+    </p>
+
+    <h2>Responsibilities split into manager layers</h2>
+    <p>
+      WaveManager, EnemyManager, TowerManager, ProjectileManager and MapManager —
+      every responsibility lives in its own class. Enemy types such as Orc and
+      Bat derive from a shared Enemy base, so adding a new enemy means writing
+      one subclass and nothing else.
+    </p>
+
+    <h2>My own map editor</h2>
+    <p>
+      I wrote a tile-based editor: start and end points and the path are laid
+      down freely, saved to disk in my own file format, and loaded back through
+      a save/load class. The map in these screenshots was designed with it.
+      Building the tool was faster than placing tiles by hand twice.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>3</b><span>tower types</span></div>
+        <div><b>2</b><span>enemy types</span></div>
+        <div><b>9+</b><span>waves</span></div>
+        <div><b>0</b><span>game engines used</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Highlights</h3>
+      <ul>
+        <li>Scene-based state machine</li>
+        <li>Multithreaded update/render</li>
+        <li>Custom tile map editor</li>
+        <li>Inheritance-based enemy system</li>
+        <li>Save and load to disk</li>
+        <li>Sprite-sheet animation</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Written by hand</h3>
+      <ul>
+        <li>The render loop</li>
+        <li>Sprite slicing from sheets</li>
+        <li>Collision and targeting</li>
+        <li>Wave pacing and difficulty</li>
+        <li>The level editor and its file format</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="gallery">
+  <figure>
+    <img src="/img/java-combat.jpg" alt="Archer and cannon towers firing on orcs and bats">
+    <figcaption>Archer and cannon towers holding the line against orcs and bats.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/java-editor.png" alt="The tile-based map editor">
+    <figcaption>The tile-based map editor — my own tool, my own file format.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/java-map.png" alt="The full map with the enemy path">
+    <figcaption>The finished map. Water, walls and the path were all placed in the editor above.</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/java-menu.png" alt="The main menu: Play, Edit, Quit">
+    <figcaption>Main menu. Play, Edit, Quit — three scenes, one state machine.</figcaption>
+  </figure>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Building a complex system by splitting it into independent, testable parts —
+    that is the most durable thing this project taught me.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/kitchen-rush/">← Kitchen Rush</a>
+  <a href="/projects/belgelendirme/">Certification Platform →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+</body>
+</html>

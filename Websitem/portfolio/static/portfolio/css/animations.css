@@ -1,0 +1,141 @@
+/* ---------- Scroll reveal ---------- */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ---------- Tilt (transform applied inline by JS, transition here) ---------- */
+.tilt { transition: transform .15s ease-out; }
+
+/* ---------- Orbit rotation ---------- */
+@keyframes ring-cw { to { transform: rotate(360deg); } }
+@keyframes ring-ccw { to { transform: rotate(-360deg); } }
+@keyframes badge-cw { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+@keyframes badge-ccw { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(0deg) rotate(-360deg); } }
+
+.orbit__ring--a { animation: ring-cw 46s linear infinite; }
+.orbit__ring--a .orbit__badge { animation: badge-ccw 46s linear infinite; }
+.orbit__ring--b { animation: ring-ccw 30s linear infinite; }
+.orbit__ring--b .orbit__badge { animation: badge-cw 30s linear infinite; }
+
+/* ---------- Marquee scroll ---------- */
+.marquee__track { animation: marquee-scroll 38s linear infinite; }
+@keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------- Mood box ---------- */
+.mood-box { animation: mood-bob 4.5s ease-in-out infinite; }
+@keyframes mood-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* Each mood enters with its own body language: idle breathes in calmly,
+   brag leans in cocky, graduate hops up proud, scared jolts and shakes. */
+.mood-box[data-state="idle"] .mood-photo[data-face="idle"] {
+  animation: face-idle .55s ease both;
+}
+.mood-box[data-state="brag"] .mood-photo[data-face="brag"] {
+  animation: face-brag .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+.mood-box[data-state="graduate"] .mood-photo[data-face="graduate"] {
+  animation: face-graduate .7s cubic-bezier(.34,1.56,.64,1) both;
+}
+.mood-box[data-state="scared"] .mood-photo[data-face="scared"] {
+  animation: face-scared .6s ease both;
+}
+
+/* transform only — opacity belongs to the .mood-photo transition, otherwise the
+   outgoing photo snaps to 0 the instant its rule stops matching and the box
+   flashes empty for a frame instead of crossfading. */
+@keyframes face-idle {
+  from { transform: scale(.9); }
+  to   { transform: scale(1); }
+}
+@keyframes face-brag {
+  0%   { transform: scale(.82) rotate(-7deg); }
+  60%  { transform: scale(1.07) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes face-graduate {
+  0%   { transform: translateY(16px) scale(.84); }
+  55%  { transform: translateY(-7px) scale(1.06); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes face-scared {
+  0%   { transform: scale(1.18); }
+  20%  { transform: scale(1) translateX(-6px) rotate(-5deg); }
+  36%  { transform: translateX(6px) rotate(5deg); }
+  52%  { transform: translateX(-5px) rotate(-4deg); }
+  68%  { transform: translateX(4px) rotate(3deg); }
+  84%  { transform: translateX(-2px) rotate(-1deg); }
+  100% { transform: translateX(0) rotate(0); }
+}
+
+/* Ring that bursts out of the photo whenever the mood flips. */
+.mood-box__stage.is-burst::after { animation: ring-burst .75s cubic-bezier(.22,.9,.3,1); }
+@keyframes ring-burst {
+  from { opacity: .9; transform: scale(.82); }
+  to   { opacity: 0; transform: scale(1.55); }
+}
+
+/* ---------- Hero entrance ---------- */
+.hero__content.in,
+.hero__content { animation: hero-in 1s ease both; }
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(24px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- Chip pop-in (highlight bombardment) ---------- */
+.reveal.in .chip--pop {
+  animation: chip-pop .5s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--d, 0) * 70ms);
+}
+@keyframes chip-pop {
+  from { opacity: 0; transform: scale(.6) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ---------- Stat pop-in ---------- */
+.reveal.in .stat {
+  animation: stat-pop .55s ease both;
+  animation-delay: calc(var(--d, 0) * 90ms);
+}
+@keyframes stat-pop {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Project card rise-in (staggered, bottom to top) ---------- */
+.reveal.in .mini-card {
+  animation: card-rise .6s ease both;
+  animation-delay: calc(var(--d, 0) * 120ms);
+}
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Background gradient drift (adds motion behind panels) ---------- */
+.section::before {
+  content: "";
+  position: absolute;
+  top: 10%; left: 50%;
+  width: 60vw; height: 60vw;
+  max-width: 700px; max-height: 700px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
+  transform: translateX(-50%);
+  z-index: -1;
+  animation: drift 16s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(-50%, 0) scale(1); }
+  50% { transform: translate(-40%, 4%) scale(1.08); }
+}
+
+/* ---------- Scroll cue ---------- */
+.scroll-cue { animation: cue-bounce 1.8s ease-in-out infinite; }
+@keyframes cue-bounce { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-box, .scroll-cue { animation: none; }
+  /* !important: the per-mood rules above outrank a bare .mood-photo selector.
+     The opacity crossfade stays — it is the motion that needs to go. */
+  .mood-photo, .mood-box__stage::after { animation: none !important; }
+}
