@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>webserv — Uğur Polat</title>
+<meta name="description" content="An HTTP/1.1 server written from scratch in C with zero dependencies. One poll() loop, hand-written parsing, and a path containment check that makes traversal attacks pointless.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/projects/">Work</a>
+    <a href="/#about">About</a>
+    <a href="/#server">This server</a>
+    <span class="lang"><a href="/projects/webserv/" aria-current="true">EN</a><s>/</s><a href="/tr/projects/webserv/">TR</a></span>
+    <a class="nav__cta" href="/#contact">Hire me</a>
+  </nav>
+</header>
+
+<main class="proj">
+
+<header class="proj__head">
+  <a class="back" href="/projects/">← all work</a>
+  <p class="eyebrow">Systems · C</p>
+  <h1>webserv</h1>
+  <p class="lede">
+    An HTTP/1.1 server written from an empty file in C — and the program that
+    delivered every byte of this page to you.
+  </p>
+  <ul class="proj__stack">
+    <li>C</li><li>POSIX sockets</li><li>poll()</li><li>Non-blocking I/O</li>
+    <li>HTTP/1.1</li><li>realpath() containment</li><li>Makefile</li>
+    <li>Zero dependencies</li>
+  </ul>
+</header>
+
+<div class="media">
+  <figure>
+    <img src="/img/webserv-cover.svg" alt="webserv terminal output showing served requests">
+    <figcaption>
+      The access log while you were reading this site. The <code>403</code> is
+      the path traversal check refusing to leave the document root.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Every website runs on a program that listens on a port, reads what the
+      browser sends and writes back an answer. Nearly everyone rents that
+      program — nginx, Apache, whatever the host provides — and treats it as a
+      black box. This is that program, written by hand, so that it isn't one.
+    </p>
+
+    <h2>Two files, one honest boundary</h2>
+    <p>
+      <code>main.c</code> owns sockets: listen, accept, poll, read, write. It
+      does not know what HTTP is. <code>http.c</code> owns HTTP: parse, route,
+      build a response. It never touches a socket. There is no
+      <code>read()</code> in the HTTP layer and no <code>404</code> in the socket
+      layer, and that separation is the whole architecture.
+    </p>
+
+    <h2>One poll() loop instead of 256 threads</h2>
+    <p>
+      Giving every visitor a thread costs roughly a megabyte of stack each plus
+      constant context switching. Instead, a single <code>poll()</code> call
+      hands the kernel every connection at once and sleeps at zero CPU until one
+      of them speaks. This is the same architectural decision that let nginx
+      displace Apache, and implementing it is very different from reading about
+      it.
+    </p>
+
+    <h2>The part that is actually hard</h2>
+    <p>
+      TCP is a byte stream, not a message queue. A single HTTP request can
+      arrive in five pieces, and five requests can arrive in one piece.
+      <code>read()</code> does not hand you a request; it hands you whatever
+      turned up. So after every read the server asks one question: is there a
+      <em>complete</em> request in this buffer yet? If not, it waits. If there
+      is, it answers it and shifts whatever came after it to the front of the
+      buffer. Getting this wrong is how servers hang, truncate, or answer the
+      wrong request.
+    </p>
+
+    <h2>The security boundary</h2>
+    <p>
+      <code>GET /../../../../etc/passwd</code> is the oldest attack on a web
+      server and it has a hundred disguises: <code>%2e%2e</code>, symlinks,
+      nested paths that walk back out. Rather than trying to recognise every
+      disguise, this server doesn't inspect the requested path at all. It hands
+      it to <code>realpath()</code>, which collapses every <code>..</code> and
+      follows every symlink, and then checks one thing: does the resolved file
+      live inside the document root?
+    </p>
+    <p>
+      Whatever the client dressed the path up as, after resolution it is either
+      inside or it isn't. There is nothing left to outsmart. The same principle
+      applies to the contact form: every field is decoded, then stripped of
+      control characters, because a newline inside a name would otherwise forge
+      a second entry in the log file.
+    </p>
+
+    <h2>Knowing where to stop</h2>
+    <p>
+      It does not do TLS — writing your own cryptography is how you acquire a
+      false sense of security; in production this sits behind a proxy that
+      terminates HTTPS. No CGI, no dynamic pages, no database. The contact form
+      appends to a file, which is the correct amount of machinery for a contact
+      form. Deciding what not to build is part of the engineering, not a gap
+      in it.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>At a glance</h3>
+      <div class="side__nums">
+        <div><b>~800</b><span>lines of C</span></div>
+        <div><b>0</b><span>dependencies</span></div>
+        <div><b>1</b><span>poll() loop</span></div>
+        <div><b>256</b><span>concurrent clients</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Implements</h3>
+      <ul>
+        <li>HTTP/1.1 parsing by hand</li>
+        <li>GET, HEAD, POST</li>
+        <li>Static files with MIME types</li>
+        <li>Keep-alive and pipelining</li>
+        <li>Non-blocking I/O via poll()</li>
+        <li>Form handling to disk</li>
+        <li>200 400 403 404 413 414 431 501</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Verified by</h3>
+      <ul>
+        <li>19 automated checks</li>
+        <li>Three path traversal attacks, all refused</li>
+        <li>A log injection attempt, blocked</li>
+        <li>200 concurrent requests, none dropped</li>
+        <li>Compiled -Wall -Wextra -Werror, zero warnings</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="closing">
+  <blockquote>
+    I did not write this because it was the practical choice. I wrote it because
+    after this, nothing about the web is a black box to me — and the page you
+    are reading is the proof that it works.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/projects/laptop-anatomy/">← Anatomy of a Laptop</a>
+  <a href="/projects/rage-attack/">Rage Attack →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p>Served by <a href="/projects/webserv/">webserv</a> — a web server written in C.</p>
+</footer>
+</body>
+</html>

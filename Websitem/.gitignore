@@ -1,0 +1,12 @@
+# collectstatic regenerates this on every deploy from portfolio/static/
+/staticfiles/
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# local overrides and anything that would carry a real secret
+.env
+db.sqlite3

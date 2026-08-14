@@ -1,3 +1,5 @@
 *.o
-webserv
+# The leading slash matters: without it this pattern also swallowed
+# www/projects/webserv/, the case study page, and 404'd it in production.
+/webserv
 contact.log

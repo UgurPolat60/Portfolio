@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>webserv — Uğur Polat</title>
+<meta name="description" content="Sıfır bağımlılıkla, sıfırdan C ile yazılmış bir HTTP/1.1 sunucusu. Tek poll() döngüsü, elle yazılmış ayrıştırma ve dizin dışına çıkma saldırısını anlamsız kılan bir kontrol.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="/tr/">ugur<span>.</span>polat</a>
+  <nav>
+    <a href="/tr/projects/">Projeler</a>
+    <a href="/tr/#about">Hakkımda</a>
+    <a href="/tr/#server">Bu sunucu</a>
+    <span class="lang"><a href="/projects/webserv/">EN</a><s>/</s><a href="/tr/projects/webserv/" aria-current="true">TR</a></span>
+    <a class="nav__cta" href="/tr/#contact">Benimle çalış</a>
+  </nav>
+</header>
+
+<main class="proj">
+
+<header class="proj__head">
+  <a class="back" href="/tr/projects/">← tüm projeler</a>
+  <p class="eyebrow">Sistem · C</p>
+  <h1>webserv</h1>
+  <p class="lede">
+    Boş bir dosyadan C ile yazılmış bir HTTP/1.1 sunucusu — ve bu sayfanın her
+    baytını sana ulaştıran program.
+  </p>
+  <ul class="proj__stack">
+    <li>C</li><li>POSIX soketleri</li><li>poll()</li><li>Bloklamayan G/Ç</li>
+    <li>HTTP/1.1</li><li>realpath() sınırlaması</li><li>Makefile</li>
+    <li>Sıfır bağımlılık</li>
+  </ul>
+</header>
+
+<div class="media">
+  <figure>
+    <img src="/img/webserv-cover.svg" alt="Servis edilen istekleri gösteren webserv terminal çıktısı">
+    <figcaption>
+      Sen bu siteyi gezerken tutulan erişim kaydı. Oradaki <code>403</code>,
+      dizin dışına çıkma kontrolünün docroot'tan çıkmayı reddetmesi.
+    </figcaption>
+  </figure>
+</div>
+
+<div class="proj__body">
+  <div>
+    <p class="proj__lead">
+      Her web sitesi, bir portu dinleyen, tarayıcının gönderdiğini okuyan ve
+      cevabı geri yazan bir program üzerinde çalışır. Neredeyse herkes o programı
+      kiralar — nginx, Apache, hosting ne veriyorsa — ve ona bir kara kutu gibi
+      davranır. Bu, o programın elle yazılmış hâli; tam da kara kutu olmasın
+      diye.
+    </p>
+
+    <h2>İki dosya, tek dürüst sınır</h2>
+    <p>
+      <code>main.c</code> soketlerin sahibi: dinle, kabul et, poll'la, oku, yaz.
+      HTTP'nin ne olduğunu bilmiyor. <code>http.c</code> HTTP'nin sahibi:
+      ayrıştır, yönlendir, cevap üret. Hiçbir sokete dokunmuyor. HTTP katmanında
+      tek bir <code>read()</code>, soket katmanında tek bir <code>404</code> yok
+      — ve mimarinin tamamı bu ayrım.
+    </p>
+
+    <h2>256 thread yerine tek bir poll() döngüsü</h2>
+    <p>
+      Her ziyaretçiye bir thread vermek, her biri için yaklaşık bir megabayt
+      yığın ve sürekli bağlam değiştirme demek. Bunun yerine tek bir
+      <code>poll()</code> çağrısı tüm bağlantıları çekirdeğe veriyor ve içlerinden
+      biri konuşana kadar sıfır CPU ile uyuyor. Bu, nginx'in Apache'nin yerini
+      almasını sağlayan mimari kararın aynısı — ve onu uygulamak hakkında okumaya
+      hiç benzemiyor.
+    </p>
+
+    <h2>Asıl zor olan kısım</h2>
+    <p>
+      TCP bir mesaj kuyruğu değil, bir bayt akışıdır. Tek bir HTTP isteği beş
+      parça hâlinde gelebilir, beş istek tek parça hâlinde gelebilir.
+      <code>read()</code> sana bir istek vermez; eline ne geçtiyse onu verir. Bu
+      yüzden sunucu her okumadan sonra tek bir soru soruyor: bu tamponda
+      <em>eksiksiz</em> bir istek var mı? Yoksa bekliyor. Varsa cevaplıyor ve
+      arkasından geleni tamponun başına kaydırıyor. Bunu yanlış yapmak,
+      sunucuların takılmasının, cevabı yarıda kesmesinin ya da yanlış isteği
+      cevaplamasının sebebi.
+    </p>
+
+    <h2>Güvenlik sınırı</h2>
+    <p>
+      <code>GET /../../../../etc/passwd</code> web sunucularına yapılan en eski
+      saldırı ve yüz tane kılığı var: <code>%2e%2e</code>, sembolik bağlantılar,
+      geri çıkan iç içe yollar. Bu sunucu kılıkları tanımaya çalışmak yerine
+      istenen yolu hiç incelemiyor. Yolu <code>realpath()</code>'e veriyor — o da
+      her <code>..</code>'yi çözüp her sembolik bağlantıyı takip ediyor — ve tek
+      bir şeye bakıyor: çözülmüş dosya docroot'un içinde mi?
+    </p>
+    <p>
+      İstemci yolu ne kılığa sokarsa soksun, çözümden sonra ya içeride ya değil.
+      Alt edilecek bir mantık kalmıyor. Aynı prensip iletişim formunda da
+      geçerli: her alan çözülüyor, sonra kontrol karakterlerinden temizleniyor,
+      çünkü isim alanına konan bir satır sonu log dosyasında sahte ikinci bir
+      kayıt oluşturabilirdi.
+    </p>
+
+    <h2>Nerede durulacağını bilmek</h2>
+    <p>
+      TLS yok — kendi kriptografini yazmak sahte bir güvenlik duygusu edinme
+      yöntemidir; gerçek yayında bu, HTTPS'i sonlandıran bir proxy'nin arkasında
+      durur. CGI yok, dinamik sayfa yok, veritabanı yok. İletişim formu bir
+      dosyaya ekliyor, ki bir iletişim formu için doğru miktarda makine budur.
+      Neyin yapılmayacağına karar vermek mühendisliğin bir parçası, eksiği değil.
+    </p>
+  </div>
+
+  <aside class="side">
+    <div class="side__box">
+      <h3>Bir bakışta</h3>
+      <div class="side__nums">
+        <div><b>~800</b><span>satır C</span></div>
+        <div><b>0</b><span>bağımlılık</span></div>
+        <div><b>1</b><span>poll() döngüsü</span></div>
+        <div><b>256</b><span>eşzamanlı istemci</span></div>
+      </div>
+    </div>
+    <div class="side__box">
+      <h3>Neler var</h3>
+      <ul>
+        <li>Elle yazılmış HTTP/1.1 ayrıştırma</li>
+        <li>GET, HEAD, POST</li>
+        <li>MIME tipleriyle statik dosyalar</li>
+        <li>Keep-alive ve pipelining</li>
+        <li>poll() ile bloklamayan G/Ç</li>
+        <li>Formu diske yazma</li>
+        <li>200 400 403 404 413 414 431 501</li>
+      </ul>
+    </div>
+    <div class="side__box">
+      <h3>Nasıl doğrulandı</h3>
+      <ul>
+        <li>30 otomatik kontrol</li>
+        <li>Üç dizin dışına çıkma saldırısı, hepsi reddedildi</li>
+        <li>Bir log injection denemesi, engellendi</li>
+        <li>200 eşzamanlı istek, hiçbiri düşmedi</li>
+        <li>-Wall -Wextra -Werror ile sıfır uyarı</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="closing">
+  <blockquote>
+    Bunu pratik seçim olduğu için yazmadım. Bundan sonra web'in hiçbir yanı benim
+    için kara kutu olmadığı için yazdım — ve okuduğun bu sayfa, çalıştığının
+    kanıtı.
+  </blockquote>
+</div>
+
+<nav class="proj__nav">
+  <a href="/tr/projects/laptop-anatomy/">← Bir Laptopun Anatomisi</a>
+  <a href="/tr/projects/rage-attack/">Rage Attack →</a>
+</nav>
+
+</main>
+
+<footer>
+  <p>© 2026 Uğur Polat · <a href="mailto:ugurplt8@gmail.com">ugurplt8@gmail.com</a></p>
+  <p><a href="/tr/projects/webserv/">webserv</a> tarafından servis ediliyor — C ile yazılmış bir web sunucusu.</p>
+</footer>
+</body>
+</html>
